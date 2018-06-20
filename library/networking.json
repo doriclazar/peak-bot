@@ -1,0 +1,13 @@
+﻿{
+  "module": {
+    "metadata": {
+      "name": "networking",
+      "author":"Lazar Doric",	
+      "version": "1.01",
+      "version_date": "04/16/2018",
+      "description": "Module for executing network commands.",
+      "active": "True"
+    },
+    "commands": []
+  }
+}

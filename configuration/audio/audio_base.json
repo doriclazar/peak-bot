@@ -1,0 +1,26 @@
+﻿{
+  "audio_values": [
+    {
+      "file_path":"brain/fs_memory/temp_audio.wav",	
+      "language":"en-US",
+      "format": "int16",
+      "rate": "16000",
+      "threshold": "3500",
+      "max_volume": "16384",
+      "max_alternatives": "5",
+      "chunk_size": "1024",
+      "active": "True"
+    },
+    {
+      "file_path":"brain/fs_memory/temp_audio.wav",	
+      "language":"en-US",
+      "format": "int32",
+      "rate": "44100",
+      "threshold": "500",
+      "max_volume": "16384",
+      "max_alternatives": "1",
+      "chunk_size": "1024",
+      "active": "False"
+    }
+  ]
+}

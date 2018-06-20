@@ -1,0 +1,34 @@
+{
+"languages":[
+  {
+    "code":"en-US",
+    "name":"American English",
+    "active":"True"
+  },
+  {
+    "code":"en-GB",
+    "name":"British English",
+    "active":"False"
+  },
+  {
+    "code":"en-CA",
+    "name":"Canadian English",
+    "active":"False"
+  },
+  {
+    "code":"en-IN",
+    "name":"Indian English",
+    "active":"False"
+  },
+  {
+    "code":"pt-PT",
+    "name":"European Portugese",
+    "active":"False"
+  },
+  {
+    "code":"pt-BR",
+    "name":"Brasilian Portugese",
+    "active":"False"
+  }
+]
+}

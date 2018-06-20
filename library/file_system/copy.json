@@ -1,0 +1,40 @@
+{
+  "command": {
+        "name": "copy file",
+        "programming_language":"bash",
+        "definition": "cp {0} {1}",
+    	"script_url": "",
+	"description":"",
+        "active": "True",
+        "note": "",
+	"module_name":"file_system",
+	"external_modules":[],
+        "calls": [
+          {
+            "language": "en-US",
+	    "response": "0",
+            "active": "True",
+            "words": [
+              {
+                "text": "copy",
+                "variable_length": "0",
+                "optional": "False",
+                "position":1
+	      },
+	      {
+		"text": "var",
+		"variable_length": "1",
+		"optional": "False",
+		"position":2 
+	      },
+              {
+                "text": "var",
+                "variable_length": "1",
+                "optional": "False",
+                "position":3 
+              }
+            ]
+          }
+	]
+      }
+}
