@@ -159,17 +159,29 @@ class PeakBot:
             self.listener.record()
             alternatives = self.transcriber.transcribe(self.listener.file_path)
             print(str(alternatives))
-            confidence = 0.3
             transcript = ''
+            '''
+            Highes confidence:
+            confidence = 0.3
             for alternative in alternatives:
                 if alternative.confidence > confidence:
                     transcript = alternative.transcript
                     confidence = alternative.confidence
+
+            By index:
+            '''
+            for alternative in alternatives:
+                if alternative.confidence>0.9:
+                    transcript = alternative.transcript
+                    break
+
             response = ic.format_input(transcript)
             print('response after formating: {0}'.format(response))
             self.command_finder.find_commands(response)
             args = self.command_finder.command_args
+
             noninitial_responses = self.database.cursor.execute(self.database.query_list.select_responses_by_command_id.text, (str(self.command_finder.command_id), 1, 100)).fetchall()
+
             for noninitial_response in noninitial_responses:
                 if noninitial_response[0]>25 and noninitial_response[0]<50:
                     print(noninitial_response[1])
