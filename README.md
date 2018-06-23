@@ -22,9 +22,11 @@ To satisfy the current dependencies, make sure you have python3 and pip3 install
 ` sudo apt-get install python3 python3-pip `
 
 #### Fedora, CentOS
-` sudo yum -y install python36 python36-setuptools
-  cd /usr/lib/python3.6/site-packages/
-  python3 easy_install.py pip3 `
+` sudo yum -y install python36 python36-setuptools `
+
+` cd /usr/lib/python3.6/site-packages/ `
+ 
+` python3 easy_install.py pip3 `
 
 #### Windows
 Download and install the latest release of the python3 from 
@@ -49,8 +51,9 @@ and run:
 ### Installing
 Peak Bot is still not on PyPi, so you'll have to Clone, Curl, or Wget it from github... 
 
-` git clone https://github.com/doriclazar/peak-bot.git 
-  cd peak-bot `
+` git clone https://github.com/doriclazar/peak-bot.git `
+
+` cd peak-bot `
 
 ### Runnig
 No suprises here. Run main.py with python3, (optional) with the level of verbosity:
