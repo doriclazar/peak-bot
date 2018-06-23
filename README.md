@@ -34,20 +34,25 @@ Scripts directory should be inside the python installation.
 Run ` where python ` to find it. 
 
 Use pip3 to install google-cloud-api:
+
 ` pip3 install --upgrade google-cloud-speech `
 
 You will also need to export the path to the google credentials.
 On linux, add this line to your .bashrc:
+
 ` export GOOGLE_APPLICATION_CREDENTIALS="/some_directory/google_speech_api_credentials.json" `
 
 and run:
+
 ` source .bashrc `
 
 ### Installing
 Peak Bot is still not on PyPi, so you'll have to Clone, Curl, or Wget it from github... 
+
 ` git clone https://github.com/doriclazar/peak-bot.git 
   cd peak-bot `
 
 ### Runnig
 No suprises here. Run main.py with python3, (optional) with the level of verbosity:
+
 ` python3 main.py ` or ` python3 main.py (0-6) `.
