@@ -134,6 +134,51 @@ class PeakBot:
             self.output_control.print(self.output_control.NOT_INIT, ('Executor', str(e),))
             sys.exit()
 
+    def get_additional_args(self):
+        additional_args = ()
+        noninitial_responses = self.database.cursor.execute(self.database.query_list.select_responses_by_command_id.text, (str(self.command_finder.command_id), 26, 50)).fetchall()
+        for noninitial_response in noninitial_responses:
+            print(noninitial_response[1])
+            self.listener.record()
+            alternatives = self.transcriber.transcribe(self.listener.file_path)
+            response = ic.format_input(alternatives[0].transcript)
+            additional_args = additional_args + (response,)
+        return additional_args
+
+    def run_peak_bot(self):
+        self.exit = False
+        while not self.exit:
+            self.listener.record()
+            alternatives = self.transcriber.transcribe(self.listener.file_path)
+            print(str(alternatives))
+            transcript = ''
+
+            '''
+            Higher confidence:
+            confidence = 0.3
+            for alternative in alternatives:
+                if alternative.confidence > confidence:
+                    transcript = alternative.transcript
+                    confidence = alternative.confidence
+
+            By index:
+            '''
+            for alternative in alternatives:
+                if alternative.confidence>0.9:
+                    transcript = alternative.transcript
+                    break
+
+            self.output_control.print(self.output.BFT_FORMAT, (transcript,))
+            response = ic.format_input(transcript)
+            self.output_control.print(self.output.AFT_FORMAT, (response,))
+            self.command_finder.find_commands(response)
+            args = self.command_finder.command_args
+            args = args + self.get_additional_args()
+
+            self.executor.execute_command(self.command_finder.command_id, args)
+            self.database.connection.commit()
+            self.exit = True
+
     def __init__(self, settings_path, output_control):
         self.output_control = output_control
         oc = output_control
@@ -154,45 +199,7 @@ class PeakBot:
         self.init_transcriber(self.command_finder.expected_calls)
         self.init_executor()
 
-        self.exit = False
-        while not self.exit:
-            self.listener.record()
-            alternatives = self.transcriber.transcribe(self.listener.file_path)
-            print(str(alternatives))
-            transcript = ''
-            '''
-            Highes confidence:
-            confidence = 0.3
-            for alternative in alternatives:
-                if alternative.confidence > confidence:
-                    transcript = alternative.transcript
-                    confidence = alternative.confidence
-
-            By index:
-            '''
-            for alternative in alternatives:
-                if alternative.confidence>0.9:
-                    transcript = alternative.transcript
-                    break
-
-            response = ic.format_input(transcript)
-            print('response after formating: {0}'.format(response))
-            self.command_finder.find_commands(response)
-            args = self.command_finder.command_args
-
-            noninitial_responses = self.database.cursor.execute(self.database.query_list.select_responses_by_command_id.text, (str(self.command_finder.command_id), 1, 100)).fetchall()
-
-            for noninitial_response in noninitial_responses:
-                if noninitial_response[0]>25 and noninitial_response[0]<50:
-                    print(noninitial_response[1])
-                    self.listener.record()
-                    alternatives = self.transcriber.transcribe(self.listener.file_path)
-                    response = ic.format_input(alternatives[0].transcript)
-                    args = args + (response,)
-
-            self.executor.execute_command(self.command_finder.command_id, args)
-            self.database.connection.commit()
-            self.exit = True
+        self.run_peak_bot()
 
         self.database.connection.close()
         self.output_control.print(self.output_control.DB_CON_CLOSED)
