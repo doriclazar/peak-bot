@@ -141,7 +141,7 @@ class PeakBot:
             print(noninitial_response[1])
             self.listener.record()
             alternatives = self.transcriber.transcribe(self.listener.file_path)
-            response = ic.format_input(alternatives[0].transcript)
+            response = self.input_control.format_input(alternatives[0].transcript)
             additional_args = additional_args + (response,)
         return additional_args
 
@@ -150,7 +150,6 @@ class PeakBot:
         while not self.exit:
             self.listener.record()
             alternatives = self.transcriber.transcribe(self.listener.file_path)
-            print(str(alternatives))
             transcript = ''
 
             '''
@@ -168,9 +167,9 @@ class PeakBot:
                     transcript = alternative.transcript
                     break
 
-            self.output_control.print(self.output.BFT_FORMAT, (transcript,))
-            response = ic.format_input(transcript)
-            self.output_control.print(self.output.AFT_FORMAT, (response,))
+            self.output_control.print(self.output_control.BFR_COM_WORDS, (transcript,))
+            response = self.input_control.format_input(transcript)
+            self.output_control.print(self.output_control.AFT_COM_WORDS, (response,))
             self.command_finder.find_commands(response)
             args = self.command_finder.command_args
             args = args + self.get_additional_args()
@@ -185,7 +184,6 @@ class PeakBot:
         self.file_handler = FileHandler(output_control)
         self.settings_dict = self.file_handler.load_from_file(settings_path)
         self.input_control = InputControl(output_control)
-        ic = self.input_control
         languages_path = ('{0}{1}'.format(self.settings_dict['languages_dir'], self.settings_dict['languages_filename']))
         self.languages_dict = self.file_handler.load_from_file(languages_path)  
         audio_path = ('{0}{1}'.format(self.settings_dict['audio_dir'], self.settings_dict['audio_filename']))
