@@ -1,6 +1,6 @@
 ﻿{
-  "languages_dir":"configuration/languages/",
-  "audio_dir":"configuration/audio/",
+  "languages_dir":"tongue/settings/",
+  "audio_dir":"ears/settings/",
   "credentials_dir":"configuration/credentials/",
   "library_dir":"library/",
   "commands_dir":"library/",

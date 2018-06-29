@@ -1,7 +1,7 @@
 ﻿{
   "audio_values": [
     {
-      "file_path":"brain/fs_memory/temp_audio.wav",	
+      "file_path":"brain/fs_memory/temp_audio.wav",
       "language":"en-US",
       "format": "int16",
       "rate": "16000",

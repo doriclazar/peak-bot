@@ -137,9 +137,24 @@ class PeakBot:
     def get_additional_args(self):
         additional_args = ()
         noninitial_responses = self.database.cursor.execute(self.database.query_list.select_responses_by_command_id.text, (str(self.command_finder.command_id), 26, 50)).fetchall()
-        for noninitial_response in noninitial_responses:
-            print(noninitial_response[1])
+        response_index = 0
+        if noninitial_responses[0][0] is None:
+            noninitial_responses = ''
+        print(str(noninitial_responses))
+        while response_index < len(noninitial_responses):
+            response_number = noninitial_responses[response_index][0]
+            response_text = noninitial_responses[response_index][1]
+            number_of_words = noninitial_responses[response_index][2]
+            expected_answers=()
+            if number_of_words>1:
+                for words_index in range(number_of_words):
+                    expected_answers = expected_answers + (noninitial_responses[response_index + words_index][1],)
+                response_index += number_of_words
+            response_index += 1
             self.listener.record()
+            if len(expected_answers) > 0:
+                #send to transcriber as expected words!!!
+                pass
             alternatives = self.transcriber.transcribe(self.listener.file_path)
             response = self.input_control.format_input(alternatives[0].transcript)
             additional_args = additional_args + (response,)
