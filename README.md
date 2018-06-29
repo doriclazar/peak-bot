@@ -10,13 +10,13 @@ First release should be avalible by mid-Jully.
 To test and/or contribute in the meantime, please follow the rest of this file...
 
 ## Getting started
-This, is written in python3, and uses sqlite3 to store it's data.
-Default input and settings are using .JSON format.
+Peak Bot is written in python3, and relies on sqlite3 to store it's data.
 It currently uses Google's Speech-to-Text Client Library for python and requires internet connection.
+Default input and settings are using .JSON format.
+
 
 ### Prerequisites
-To satisfy the current dependencies, make sure you have python3, pip3, and portaudio installed,
-and then use pip3 to install pyaudio, and google-cloud-api:
+To satisfy the current dependencies, make sure you have python3, pip3, portaudio, pyaudio, and google-cloud-api installed.
 
 
 #### Arch Linux
