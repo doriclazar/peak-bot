@@ -1,11 +1,13 @@
 # Peak Bot
-Lightweight, voice-assistant-like AI. This is a young client part of the djago based multi-project "Peaks" .
-"Peaks" are, simplified, social networks for bots. Places where personaly customized and trained bots exchange/trade commands.
+This voice-assistant-like AI is a young client part of the "Peaks" infrastructure.
+"Peaks" are Django-based managment servers for personaly customized and trained bots, and places where they exchange/trade their commands.
 Peak-63 and Peak-30 are in development, and should be publised along with extented features of the client part.
 
 ## Status
-Peak Bot is a young sub-project. It runs well on Linux and Windows,
+Peak Bot is a young repository. Master branch runs well on Linux and Windows,
 but still lacks large amount of features to be competitive with commercial AIs.
+First release should be avalible by mid-Jully. 
+To test and/or contribute in the meantime, please follow the rest of this file...
 
 ## Getting started
 This, is written in python3, and uses sqlite3 to store it's data.
