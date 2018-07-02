@@ -2,6 +2,7 @@
   "module": {
     "metadata": {
       "name": "file_system",
+      "code": "FILESYS",
       "author":"Lazar Doric",	
       "version": "1.01",
       "version_date": "05/09/2018",

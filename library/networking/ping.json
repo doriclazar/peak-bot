@@ -1,6 +1,7 @@
 {
   "command": {
     "name": "ping",
+    "code": "PING0011",
     "programming_language": "bash",
     "definition": "ping {0} -c {1}",
     "script_url": "",

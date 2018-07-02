@@ -1,6 +1,7 @@
 {
   "command": {
         "name": "skeleton",
+	"code": "SKEL9999",
         "programming_language":"python3",
         "definition": "print(%s)",
 	"script_url": "",

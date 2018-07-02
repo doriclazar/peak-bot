@@ -1,6 +1,7 @@
 {
   "command": {
         "name": "Write to File",
+      	"code": "WRFI0006",
         "programming_language":"bash",
         "definition": "echo {1} > {0}",
 	"script_url": "",

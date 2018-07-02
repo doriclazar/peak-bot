@@ -69,10 +69,13 @@ class PeakBot:
         Initiates a new database.
         '''
         self.output_control.print(self.output_control.INIT_ATT, ('database',))
-        try:
+        #try:
+        if True:
             self.database = Database(self.output_control, self.database_path, self.languages_dict, self.module_dicts, self.command_list)
             self.output_control.print(self.output_control.INIT, ('Database',))
-        except Exception as e:
+        else:
+            e=''
+        #except Exception as e:
             self.output_control.print(self.output_control.NOT_INIT, ('Database', str(e)))
 
     def init_listener(self):

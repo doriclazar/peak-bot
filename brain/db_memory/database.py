@@ -23,7 +23,6 @@ class Database:
                 self.query_list.create_languages.text,
                 self.query_list.create_modules.text,
                 self.query_list.create_external_modules.text,
-                self.query_list.create_command_categories.text,
                 self.query_list.create_commands.text,
                 self.query_list.create_imports.text,
                 self.query_list.create_calls.text,
@@ -58,6 +57,7 @@ class Database:
                 cursor = self.cursor,
                 module_id = module_uid,
                 name = command_data['name'],
+                code = command_data['code'],
                 programming_language = command_data['programming_language'],
                 script_url = command_data['script_url'],
                 definition = command_data['definition'],
@@ -120,6 +120,7 @@ class Database:
         module = Module(self.query_list,
                 cursor = self.cursor,
                 name = module_meta['name'],
+                code = module_meta['code'],
                 description = module_meta['description'],
                 active = module_meta['active'],
                 output_control = self.output_control)

@@ -1,6 +1,7 @@
 {
   "command": {
         "name": "copy file 4",
+      	"code": "CPFI0010",
         "programming_language":"python3",
         "definition": "copy({0}, {1}, follow_symlinks={2})",
     	"script_url": "",

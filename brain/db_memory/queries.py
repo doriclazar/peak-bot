@@ -11,46 +11,39 @@ class QueryList:
     create_languages = Query(1, ('SQLite3', 'MySQL'), 'This table holds the languages of the command calls.', \
         'CREATE TABLE IF NOT EXISTS languages ( \
         id INTEGER PRIMARY KEY AUTOINCREMENT, \
-        code VARCHAR(5), \
-        name VARCHAR(60), \
+        name VARCHAR(32), \
+        code VARCHAR(16), \
         active BOOLEAN \
         );')
 
     create_modules = Query(1, ('SQLite3', 'MySQL'), 'Creates the "modules", a table which holds the names of command chunks.', \
         'CREATE TABLE IF NOT EXISTS modules ( \
         id INTEGER PRIMARY KEY AUTOINCREMENT, \
-        name VARCHAR(60), \
-        description VARCHAR(300), \
+        name VARCHAR(32), \
+        code VARCHAR(16), \
+        description VARCHAR(1024), \
         active BOOLEAN \
         );')
 
-    create_command_categories = Query(1, ('SQLite3', 'MySQL'), 'Creates the table "command_categories".', \
-        'CREATE TABLE IF NOT EXISTS command_categories ( \
-        id INTEGER PRIMARY KEY AUTOINCREMENT, \
-        name VARCHAR(60), \
-        description VARCHAR(300), \
-        active BOOLEAN \
-        );')
 
     create_commands = Query(1, ('SQLite3', 'MySQL'), 'Creates the "commands" table. Multiple commands are binded by one module.', \
         'CREATE TABLE IF NOT EXISTS commands ( \
         id INTEGER PRIMARY KEY AUTOINCREMENT, \
         module_id INTEGER NOT NULL, \
-        name VARCHAR(60), \
-        category_id INTEGER NOT NULL, \
+        name VARCHAR(32), \
+        code VARCHAR(16), \
         programming_language VARCHAR(60), \
-        definition VARCHAR(6000), \
-        script_url VARCHAR(200), \
-        description VARCHAR(300), \
+        definition VARCHAR(8192), \
+        script_url VARCHAR(128), \
+        description VARCHAR(1024), \
         active BOOLEAN DEFAULT True, \
         FOREIGN KEY (module_id) REFERENCES modules(id) \
-        FOREIGN KEY (category_id) REFERENCES command_categories(id) \
         );')
 
     create_external_modules = Query(1, ('SQLite3', 'MySQL'), 'Creates table for usage with commands - to be imported at execution', \
         'CREATE TABLE IF NOT EXISTS external_modules ( \
         id INTEGER PRIMARY KEY AUTOINCREMENT, \
-        name VARCHAR(60), \
+        name VARCHAR(32), \
         active BOOLEAN \
         );')
 
@@ -78,7 +71,7 @@ class QueryList:
     create_words = Query(1, ('SQLite3', 'MySQL'), 'Creates the "words" table.', \
         'CREATE TABLE IF NOT EXISTS words ( \
         id INTEGER PRIMARY KEY AUTOINCREMENT, \
-        text VARCHAR(60), \
+        text VARCHAR(128), \
         active BOOLEAN DEFAULT True \
         );')
 
@@ -102,19 +95,13 @@ class QueryList:
 
     insert_module = Query(3, ('SQLite3', 'MySQL'), 'Inserts a single module.', \
         'INSERT INTO modules \
-        (name, description, active) \
+        (name, code, description, active) \
         VALUES \
-        (?, ?, ?);')
-
-    insert_command_category = Query(1, ('SQLite3', 'MySQL'), 'Inserts a single command category.', \
-        'INSERT INTO command_categories \
-        (name, description, active) \
-        VALUES \
-        (?, ?, ?);')
+        (?, ?, ?, ?);')
 
     insert_command = Query(1, ('SQLite3', 'MySQL'), 'Inserts a single command.', \
         'INSERT INTO commands \
-        (module_id, name, category_id, programming_language, definition, script_url, description,  active) \
+        (module_id, name, code, programming_language, definition, script_url, description,  active) \
         VALUES \
         (?, ?, ?, ?, ?, ?, ?, ?);')
 
@@ -161,6 +148,7 @@ class QueryList:
         FROM modules AS mod \
         WHERE mod.id LIKE ? \
         AND mod.name LIKE ? \
+        AND mod.code LIKE ? \
         AND mod.active == "True";')
 
     select_external_module = Query(4, ('SQLite3', 'MySQL'), 'Selects a single external module', \
@@ -196,7 +184,7 @@ class QueryList:
         WHERE com.id LIKE ? \
         AND com.module_id LIKE ? \
         AND com.name LIKE ? \
-        AND com.category_id LIKE ? \
+        AND com.code LIKE ? \
         AND com.programming_language LIKE ? \
         AND com.active == "True";')
 

@@ -2,6 +2,7 @@
   "module": {
     "metadata": {
       "name": "core",
+      "code": "CORE",
       "author":"Lazar Doric",	
       "version": "1.01",
       "version_date": "02/13/2018",
@@ -11,6 +12,7 @@
     "commands": [
       {
         "name": "Exit",
+	"code": "EXIT0001",
 	"programming_language":"bash",
         "definition": "exit",
 	"script_url": "",
@@ -89,6 +91,7 @@
       },
       {
         "name": "Create a Command",
+      	"code": "CRCM0002",
 	"programming_language":"sql",
         "definition": "cursor.exec(\" INSERT INTO commands (name, programming_language, definition, script_url, description, active) VALUES (%s, %s, %s, %s, %s, %s); \")",
 	"script_url": "",
@@ -169,6 +172,7 @@
       },
       {
         "name": "time request",
+      	"code": "TMRQ0003",
 	"programming_language":"python3",
         "definition": "self.returned_args = (datetime.datetime.now(),); self.additional_data = '%s %s'",
 	"script_url": "",
@@ -241,6 +245,7 @@
       },
       {
         "name": "create word",
+      	"code": "CRWO0004",
 	"programming_language":"sql",
         "definition": "cursor.exec(\" INSERT INTO words (text) VALUES (?); \")",
 	"script_url": "",

@@ -1,6 +1,7 @@
 {
   "command": {
         "name": "append to file",
+      	"code": "APFI0005",
         "programming_language":"bash",
         "definition": "echo {1} >> {0}",
 	"script_url": "",
