@@ -29,19 +29,6 @@
 	      }	    
 	    ]
           },
-          {
-            "language": "en-US",
-	    "response": "10",
-            "active": "True",
-            "words": [
-              {
-                "text": "Failed to copy the file.",
-                "variable_length": "0",
-                "optional": "False",
-                "position":1
-	      }            
-	    ]
-          },
 	  {
             "language": "en-US",
 	    "response": "26",
@@ -62,6 +49,19 @@
             "words": [
               {
                 "text": "What's the destination?.",
+                "variable_length": "0",
+                "optional": "False",
+                "position":1
+	      }            
+	    ]
+          },
+          {
+            "language": "en-US",
+	    "response": "90",
+            "active": "True",
+            "words": [
+              {
+                "text": "Failed to copy the file.",
                 "variable_length": "0",
                 "optional": "False",
                 "position":1

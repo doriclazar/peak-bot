@@ -17,7 +17,7 @@ class CommandFinder:
         These calls are, later on, used for comparison with user input.
         Argument "sic_level" determines the number of words to be retreived 
         per command call. It should always be equal to the number 
-        of words in the longes command call.
+        of words in the longest command call.
         '''
         #Select calls that are already written in the database: Only active, non-response (response = 0) commands.
         known_calls = (self.database.cursor.execute(self.database.query_list.select_known_calls.text)).fetchall()
@@ -37,6 +37,7 @@ class CommandFinder:
                         current_call_vars.append((int(position_in_tuple/2+1), call_variable_length))
 
             self.check_calls.append((current_call_text[:-1], tuple(current_call_vars), call_id))
+
             if current_call_text[:-1] not in self.expected_calls:
                 self.expected_calls.append(current_call_text[:-1])
             current_call_text = ""

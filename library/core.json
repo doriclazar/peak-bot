@@ -32,18 +32,44 @@
                 "variable_length": "0",
                 "optional": "False",
                 "position": 1
+              }
+	    ]
+          },
+	  {
+            "language": "en-US",
+	    "response": "1",
+            "active": "True",
+            "words": [
+              {
+                "text": "exit",
+                "variable_length": "0",
+                "optional": "False",
+                "position": 1
               },
               {
                 "text": "now",
                 "variable_length": "0",
-                "optional": "True",
+                "optional": "False",
                 "position": 2
               }
-            ]
+	    ]
+          },
+	  {
+            "language": "en-US",
+	    "response": "3",
+            "active": "True",
+            "words": [
+              {
+                "text": "quit",
+                "variable_length": "0",
+                "optional": "False",
+                "position": 1
+              }
+	    ]
           },
           {
             "language": "en-US",
-	    "response": "0",
+	    "response": "4",
             "active": "True",
             "words": [
               {
@@ -55,14 +81,14 @@
               {
                 "text": "now",
                 "variable_length": "0",
-                "optional": "True",
+                "optional": "False",
                 "position": 2
               }
-            ]
+	    ]
           },
 	  {
             "language": "en-US",
-	    "response": "1",
+	    "response": "90",
             "active": "True",
             "words": [
               {

@@ -25,14 +25,13 @@ class QueryList:
         active BOOLEAN \
         );')
 
-
     create_commands = Query(1, ('SQLite3', 'MySQL'), 'Creates the "commands" table. Multiple commands are binded by one module.', \
         'CREATE TABLE IF NOT EXISTS commands ( \
         id INTEGER PRIMARY KEY AUTOINCREMENT, \
         module_id INTEGER NOT NULL, \
         name VARCHAR(32), \
         code VARCHAR(16), \
-        programming_language VARCHAR(60), \
+        programming_language VARCHAR(32), \
         definition VARCHAR(8192), \
         script_url VARCHAR(128), \
         description VARCHAR(1024), \
@@ -246,7 +245,7 @@ class QueryList:
         self.select_known_calls.text = '{0}    co.id\n\
     FROM modules AS mod\n\
     LEFT JOIN commands AS co ON co.module_id = mod.id \n\
-    LEFT JOIN calls AS cal ON cal.command_id = co.id AND cal.response = 0 \n\
+    LEFT JOIN calls AS cal ON cal.command_id = co.id AND cal.response BETWEEN 0 AND 25 \n\
     LEFT JOIN languages AS lan ON lan.id = cal.language_id \n'.format(self.select_known_calls.text)
 
         for word_index in range(1, number_of_calls+1):
