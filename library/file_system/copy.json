@@ -1,0 +1,161 @@
+{
+  "command": {
+        "name": "copy file 1",
+      	"code": "CPFI0007",
+        "programming_language":"python3",
+        "definition": "copy({0}, {1}, follow_symlinks=True)",
+    	"script_url": "",
+	"description":"",
+        "active": "True",
+        "note": "Copy the specified file from argument1-{0}(source) to argument2-{1}(destination). ",
+	"module_name":"file_system",
+	"external_modules":[
+	  {
+	    "name":"shutil",
+	    "active":"True"
+	  }	
+	],
+        "calls": [
+          {
+            "language": "en-US",
+	    "response": "0",
+            "active": "True",
+            "words": [
+              {
+                "text": "copy",
+                "variable_length": "0",
+                "optional": "False",
+                "position":1
+	      }	    
+	    ]
+          },
+	  {
+            "language": "en-US",
+	    "response": "1",
+            "active": "True",
+            "words": [
+              {
+                "text": "copy",
+                "variable_length": "0",
+                "optional": "False",
+                "position":1
+	      },
+	      {
+		"text": "var",
+		"variable_length": "1",
+		"optional": "False",
+		"position":2 
+	      }	    
+	    ]
+          },
+	  {
+            "language": "en-US",
+	    "response": "2",
+            "active": "True",
+            "words": [
+              {
+                "text": "copy",
+                "variable_length": "0",
+                "optional": "False",
+                "position":1
+	      },
+	      {
+		"text": "var",
+		"variable_length": "1",
+		"optional": "False",
+		"position":2 
+	      },
+              {
+                "text": "var",
+                "variable_length": "1",
+                "optional": "False",
+                "position":3 
+              }            
+	    ]
+          },
+	  {
+            "language": "en-US",
+	    "response": "3",
+            "active": "True",
+            "words": [
+              {
+                "text": "copy",
+                "variable_length": "0",
+                "optional": "False",
+                "position":1
+	      },
+	      {
+		"text": "var",
+		"variable_length": "1",
+		"optional": "False",
+		"position":2 
+	      },
+              {
+                "text": "var",
+                "variable_length": "1",
+                "optional": "False",
+                "position":3 
+              },
+              {
+                "text": "var",
+                "variable_length": "1",
+                "optional": "False",
+                "position":3 
+              }
+            ]
+          },
+	  {
+            "language": "en-US",
+	    "response": "26",
+            "active": "True",
+            "words": [
+              {
+                "text": "Which file?.",
+                "variable_length": "0",
+                "optional": "False",
+                "position":1
+	      }	    
+	    ]
+          },
+	  {
+            "language": "en-US",
+	    "response": "27",
+            "active": "True",
+            "words": [
+              {
+                "text": "What's the destination?.",
+                "variable_length": "0",
+                "optional": "False",
+                "position":1
+	      }            
+	    ]
+          },
+          {
+            "language": "en-US",
+	    "response": "90",
+            "active": "True",
+            "words": [
+              {
+                "text": "Failed to copy the file.",
+                "variable_length": "0",
+                "optional": "False",
+                "position":1
+	      }            
+	    ]
+          },
+          {
+            "language": "en-US",
+	    "response": "100",
+            "active": "True",
+            "words": [
+              {
+                "text": "File has been copied succesfully.",
+                "variable_length": "0",
+                "optional": "False",
+                "position":1
+	      }            
+	    ]
+          }
+	]
+      }
+}
