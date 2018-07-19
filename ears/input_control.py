@@ -147,7 +147,7 @@ class InputControl:
                             command_index +=1
 
                     else:
-                        print('command not found, or "skip" at the end.')
+                        print('Command not found, or "skip" at the end.')
                         break
                 clear_position += 1
             cc = list(filter(None, cc))
