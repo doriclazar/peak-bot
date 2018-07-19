@@ -141,7 +141,7 @@ class PeakBot:
     def get_additional_args(self, response_index):
         additional_args = ()
         noninitial_responses = self.database.cursor.execute(self.database.query_list.select_responses_by_command_id.text, (str(self.command_finder.command_id), 26, 50)).fetchall()
-        if noninitial_responses[0][0] is None:
+        if not noninitial_responses:
             noninitial_responses = ''
         while response_index < len(noninitial_responses):
             response_number = noninitial_responses[response_index][0]
@@ -196,7 +196,6 @@ class PeakBot:
             self.command_finder.find_commands(response)
             args = self.command_finder.command_args
             args = args + self.get_additional_args(len(args))
-            print(str(args))
 
             self.executor.execute_command(self.command_finder.command_id, args)
             self.database.connection.commit()

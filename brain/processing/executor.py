@@ -57,7 +57,6 @@ class Executor:
                     pass
 
                 elif programming_language == 'bash':
-                    print(definition.format(*command_args))
                     subprocess.Popen(definition.format(*command_args), shell = True)
 
                 elif programming_language == 'cpp':
