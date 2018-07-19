@@ -23,12 +23,12 @@ class Executor:
         external_modules = (self.database.cursor.execute(self.database.query_list.select_external_modules_by_command_id.text, (str(command_id),))).fetchall()
         oc = self.output_control
         for external_module in external_modules:
-            oc.print(oc.MOD_ATT_IMPORT)
+            oc.print(oc.MOD_ATT_IMPORT, external_module)
             try:
-                exec('import {0}'.format(external_module))
+                exec('import {0}'.format(external_module[0]))
                 oc.print(oc.MOD_IMPORT, external_module)
             except ImportError as e:
-                oc.print(oc.MOD_NOT_IMPORT, (str(e),))
+                oc.print(oc.MOD_NOT_IMPORT, (external_module, str(e)))
                 if internet_mode:
                     install_external_module(external_module)
 

@@ -117,8 +117,9 @@ class OutputControl:
     Executor class
     output_group: 6
     '''
-    MOD_IMPORTED = ('Module "{0}" imported.', 6, 3, 1)
-    MOD_NOT_IMPORTED = ('Unable to import the module: "{0}".\nException: {1}.', 6, 1, 5)
+    MOD_ATT_IMPORT = ('Attempting to import module "{0}".', 6, 1, 1)
+    MOD_IMPORT = ('Module "{0}" imported.', 6, 3, 1)
+    MOD_NOT_IMPORT = ('Unable to import the module: "{0}".\nException: {1}.', 6, 1, 5)
     SUC_RESP = ('{0}', 5, 0, 0)
     '''
     Data classes

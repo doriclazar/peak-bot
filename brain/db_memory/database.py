@@ -146,3 +146,4 @@ class Database:
 
         self.query_list.construct_skc_query(self.skc_level)
         self.output_control.print(self.output_control.QUERY_CONSTR, (self.skc_level,))
+        #self.connection.commit()

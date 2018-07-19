@@ -224,9 +224,9 @@ class QueryList:
         WHERE ca.position = ?, co.module_id = ? AND w.language_id = ?;')
 
     select_responses_by_command_id = Query(10, ('SQLite3', 'MySQL'), 'Used for collecting responses with a recognized command', ' \
-        SELECT resp.response, wo.text, COUNT(wo.id) \
-        FROM commands AS co \
-        LEFT JOIN calls AS resp ON resp.command_id = co.id \
+        SELECT resp.response, wo.text \
+        FROM calls AS resp \
+        LEFT JOIN commands AS co ON resp.command_id = co.id \
         LEFT JOIN combos AS cb ON cb.call_id = resp.id \
         LEFT JOIN words AS wo ON wo.id = cb.word_id \
         LEFT JOIN languages AS lan on resp.language_id = lan.id \

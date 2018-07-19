@@ -1,7 +1,6 @@
 ﻿{
-  "languages_dir":"tongue/settings/",
-  "audio_dir":"ears/settings/",
-  "credentials_dir":"configuration/credentials/",
+  "languages_dir":"configuration/",
+  "audio_dir":"configuration/",
   "library_dir":"library/",
   "commands_dir":"library/",
   "languages_filename":"lang_base.json",
