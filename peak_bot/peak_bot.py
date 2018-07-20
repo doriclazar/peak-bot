@@ -2,14 +2,14 @@
 import os
 import sys
 
-from brain.db_memory.database import Database
-from brain.fs_memory.file_handler import FileHandler
-from brain.processing.command_finder import CommandFinder
-from brain.processing.executor import Executor
-from ears.listener import Listener
-from ears.input_control import InputControl
-from antenna.google_transcriber import GoogleTranscriber
-from antenna.bing_transcriber import BingTranscriber
+from .brain.db_memory.database import Database
+from .brain.fs_memory.file_handler import FileHandler
+from .brain.processing.command_finder import CommandFinder
+from .brain.processing.executor import Executor
+from .ears.listener import Listener
+from .ears.input_control import InputControl
+from .antenna.google_transcriber import GoogleTranscriber
+from .antenna.bing_transcriber import BingTranscriber
 
 class PeakBot:
     module_dicts = []
@@ -40,19 +40,20 @@ class PeakBot:
         except Exception as e:
             oc.print(oc.DB_PATH_NOT_SET, (str(e),))
 
-    def set_modules_and_commands(self):
+    def set_modules_and_commands(self, library_path):
         '''
         This function is looking for modules and commands in the defined directory.
         'get_modules_and_commands' is using 'FileHandler' class, and it's 'check_path' function.
         '''
         oc = self.output_control
         oc.print(oc.MOD_COM_SET_ATT)
-        (self.module_dicts, self.directories) = self.file_handler.check_path(self.settings_dict['library_dir']) 
+
+        (self.module_dicts, self.directories) = self.file_handler.read_library(library_path) 
         try:
             for directory in self.directories:
-                if ('{0}.json'.format(directory)) in os.listdir(self.settings_dict['library_dir']):
-                    oc.print(oc.JSON_EXISTS, (directory, self.settings_dict['library_dir'], directory))
-                    (command_dict, self.skip_directories) = self.file_handler.check_path('{0}{1}/'.format(self.settings_dict['library_dir'], directory))
+                if ('{0}.json'.format(directory)) in os.listdir(library_path):
+                    oc.print(oc.JSON_EXISTS, (directory, library_path))
+                    (command_dict, self.skip_directories) = self.file_handler.read_library('{0}{1}/'.format(library_path, directory))
                     self.command_list.append(command_dict)
                     oc.print(oc.DIR_WITH_COMS, (directory,))
                     oc.print(oc.SKIP_DIRS, (self.skip_directories,))
@@ -201,18 +202,16 @@ class PeakBot:
             self.database.connection.commit()
             self.exit = True
 
-    def __init__(self, settings_path, output_control):
+    def __init__(self, fundamental_directories, output_control):
         self.output_control = output_control
         oc = output_control
         self.file_handler = FileHandler(output_control)
-        self.settings_dict = self.file_handler.load_from_file(settings_path)
+        self.settings_dict = self.file_handler.load_from_path(fundamental_directories[0])
+        self.audio_settings_dict = self.file_handler.load_from_path(fundamental_directories[1])  
+        self.languages_dict = self.file_handler.load_from_path(fundamental_directories[2])
         self.input_control = InputControl(output_control)
-        languages_path = ('{0}{1}'.format(self.settings_dict['languages_dir'], self.settings_dict['languages_filename']))
-        self.languages_dict = self.file_handler.load_from_file(languages_path)  
-        audio_path = ('{0}{1}'.format(self.settings_dict['audio_dir'], self.settings_dict['audio_filename']))
-        self.audio_settings_dict = self.file_handler.load_from_file(audio_path)  
         self.set_database_path()
-        self.set_modules_and_commands()
+        self.set_modules_and_commands(fundamental_directories[3])
 
         self.init_database()
         self.init_listener()

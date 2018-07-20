@@ -1,9 +1,9 @@
-#HANDLES ONLY JSON... EXPAND TO DO EVERYTHING!
 import os
 import json
+from pkg_resources import resource_exists, resource_string
 
 class FileHandler:
-    def load_from_file(self, file_path):
+    def load_from_path(self, file_path):
         oc = self.output_control
         if os.path.exists(file_path):
             try:
@@ -13,23 +13,21 @@ class FileHandler:
                 return content 
             except:
                 oc.print(oc.COULD_NOT_LOAD, (file_path,))
-                return 'NOT_LOADED_FROM_FILE'
         else:
-            oc.print(oc.FILE_NOT_FOUND, (file_path,))
-            return 'NOT_LOADED_FROM_FILE'
+            oc.print(oc.SETT_FILE_NOT_FOUND, (file_path,))
 
     def __init__(self, output_control):
         self.output_control = output_control
 
-    def check_path(self, file_path):
+    def read_library(self, file_path):
         oc = self.output_control
         oc.print(oc.FILE_PATH, (file_path,))
         data_dicts = []
         directories = []
         for file_name in os.listdir(file_path):
             oc.print(oc.FILE_CHECK, (file_name,))
-            if '.json' in  file_name:
-                data_dicts.append(self.load_from_file('{0}{1}'.format(file_path, file_name)))
+            if '.json' in file_name:
+                data_dicts.append(self.load_from_path('{0}/{1}'.format(file_path, file_name)))
                 oc.print(oc.FILE_ADDED_COMS)
             elif '.' in file_name:
                 oc.print(oc.WRONG_EXT)

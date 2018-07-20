@@ -67,7 +67,7 @@ class Listener:
     def record(self):
         sample_width, audio_data = self.listen()
         data = pack('<' + ('h'*len(audio_data)), *audio_data)
-        wave_file = wave.open(self.file_path, 'wb')
+        wave_file = wave.open(self.file_path, 'wb'):
         wave_file.setnchannels(1)
         wave_file.setsampwidth(sample_width)
         wave_file.setframerate(self.sample_rate)

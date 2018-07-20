@@ -39,7 +39,7 @@ class OutputControl:
     DB_PATH_SET_ATT = ('Attempting to set the path for the database...', 1, 3, 4)
     DB_PATH_SET = ('Database path is set.', 1, 3, 1)
     DB_PATH_NOT_SET = ('Database path could not be set.\nException: {0}', 1, 1, 5)
-    JSON_EXISTS = ('Directory {0} have a coresponding file at {1}{2}.json', 1, 3, 1)
+    JSON_EXISTS = ('Directory {0} have a coresponding file {1}.json', 1, 3, 1)
     MOD_COM_SET_ATT = ('Attempting to set modules and commands...', 1, 3, 4)
     MOD_COM_SET = ('Modules and commands are set.', 1, 3, 1)
     MOD_COM_NOT_SET = ('Modules and commands could not be set.\nException: {0}.', 1, 1, 5)
