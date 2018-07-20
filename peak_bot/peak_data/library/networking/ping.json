@@ -1,0 +1,99 @@
+{
+  "command": {
+    "name": "ping",
+    "code": "PING0011",
+    "programming_language": "bash",
+    "definition": "ping {0} -c {1}",
+    "script_url": "",
+    "description":"",
+    "active": "True",
+    "note": "",
+    "module_name": "networking",
+    "external_modules": [],
+    "calls": [
+      {
+        "language": "en-US",
+        "response": "0",
+        "active": "True",
+        "words": [
+          {
+            "text": "ping",
+            "variable_length": "0",
+            "optional": "False",
+            "position": 1
+          },
+          {
+            "text": "var",
+            "variable_length": "1",
+            "optional": "False",
+            "position": 2
+          },
+          {
+            "text": "var",
+            "variable_length": "1",
+            "optional": "False",
+            "position": 3
+          }
+        ]
+      },
+      {
+        "language": "en-US",
+        "response": "1",
+        "active": "True",
+        "words": [
+          {
+            "text": "ping",
+            "variable_length": "0",
+            "optional": "False",
+            "position": 1
+          },
+          {
+            "text": "var",
+            "variable_length": "1",
+            "optional": "False",
+            "position": 2
+          }
+        ]
+      },
+      {
+        "language": "en-US",
+        "response": "2",
+        "active": "True",
+        "words": [
+          {
+            "text": "ping",
+            "variable_length": "0",
+            "optional": "False",
+            "position": 1
+          }        
+	]
+      },
+      {
+	"language": "en-US",
+	"response": "26",
+	"active": "True",
+	"words": [
+	  {
+	    "text": "Which domain/ip address to ping?.",
+	    "variable_length": "0",
+	    "optional": "False",
+	    "position":1
+	  }	    
+	]
+      },
+      {
+	"language": "en-US",
+	"response": "27",
+	"active": "True",
+	"words": [
+	  {
+	    "text": "How many packets to transmit?.",
+	    "variable_length": "0",
+	    "optional": "False",
+	    "position":1
+	  }	    
+	]
+      }
+    ]
+  }
+}

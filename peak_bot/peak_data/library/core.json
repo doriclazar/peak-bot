@@ -1,0 +1,319 @@
+﻿{
+  "module": {
+    "metadata": {
+      "name": "core",
+      "code": "CORE",
+      "author":"Lazar Doric",	
+      "version": "1.01",
+      "version_date": "02/13/2018",
+      "description":"",
+      "active": "True"
+    },
+    "commands": [
+      {
+        "name": "Exit",
+	"code": "EXIT0001",
+	"programming_language":"bash",
+        "definition": "exit",
+	"script_url": "",
+	"description": "Shuts down the program.",
+        "active": "True",
+        "note": "",
+	"module_name":"core",
+	"external_modules":[],
+        "calls": [
+          {
+            "language": "en-US",
+	    "response": "0",
+            "active": "True",
+            "words": [
+              {
+                "text": "exit",
+                "variable_length": "0",
+                "optional": "False",
+                "position": 1
+              }
+	    ]
+          },
+	  {
+            "language": "en-US",
+	    "response": "1",
+            "active": "True",
+            "words": [
+              {
+                "text": "exit",
+                "variable_length": "0",
+                "optional": "False",
+                "position": 1
+              },
+              {
+                "text": "now",
+                "variable_length": "0",
+                "optional": "False",
+                "position": 2
+              }
+	    ]
+          },
+	  {
+            "language": "en-US",
+	    "response": "3",
+            "active": "True",
+            "words": [
+              {
+                "text": "quit",
+                "variable_length": "0",
+                "optional": "False",
+                "position": 1
+              }
+	    ]
+          },
+          {
+            "language": "en-US",
+	    "response": "4",
+            "active": "True",
+            "words": [
+              {
+                "text": "quit",
+                "variable_length": "0",
+                "optional": "False",
+                "position": 1
+              },
+              {
+                "text": "now",
+                "variable_length": "0",
+                "optional": "False",
+                "position": 2
+              }
+	    ]
+          },
+	  {
+            "language": "en-US",
+	    "response": "90",
+            "active": "True",
+            "words": [
+              {
+                "text": "Unable to exit.",
+                "variable_length": "0",
+                "optional": "False",
+                "position": 1
+              }
+            ]
+          },
+	  {
+            "language": "en-US",
+	    "response": "100",
+            "active": "True",
+            "words": [
+              {
+                "text": "Exit should have been performed. This is a silent message.",
+                "variable_length": "0",
+                "optional": "False",
+                "position": 1
+              }
+            ]
+          }
+
+        ]
+      },
+      {
+        "name": "Create a Command",
+      	"code": "CRCM0002",
+	"programming_language":"sql",
+        "definition": "cursor.exec(\" INSERT INTO commands (name, programming_language, definition, script_url, description, active) VALUES (%s, %s, %s, %s, %s, %s); \")",
+	"script_url": "",
+	"description":"Allows user to create a new command. Testing only. Requires multiple string transactions.",
+        "active": "True",
+        "note": "",
+	"module_name":"core",
+	"external_modules":[],
+        "calls": [
+          {
+            "language": "en-US",
+	    "response": "0",
+            "active": "True",
+            "words": [
+              {
+                "text": "create",
+                "variable_length": "0",
+                "optional": "True",
+                "position": 1
+              },
+              {
+                "text": "insert",
+                "variable_length": "0",
+                "optional": "True",
+                "position": 1
+              },
+              {
+                "text": "new",
+                "variable_length": "0",
+                "optional": "True",
+                "position":2 
+              },
+              {
+                "text": "a",
+                "variable_length": "0",
+                "optional": "True",
+                "position":2 
+              },
+              {
+                "text": "command",
+                "variable_length": "0",
+                "optional": "False",
+                "position": 3 
+              },
+              {
+                "text": "var",
+                "variable_length": "2",
+                "optional": "False",
+                "position": 4 
+              },
+              {
+                "text": "call",
+                "variable_length": "6",
+                "optional": "False",
+                "position": 5 
+              },
+              {
+                "text": "definition",
+                "variable_length": "2",
+                "optional": "False",
+                "position": 6 
+              },
+              {
+                "text": "var",
+                "variable_length": "1",
+                "optional": "True",
+                "position": 7 
+              },
+              {
+                "text": "var",
+                "variable_length": "1",
+                "optional": "True",
+                "position": 8 
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "time request",
+      	"code": "TMRQ0003",
+	"programming_language":"python3",
+        "definition": "self.returned_args = (datetime.datetime.now(),); self.additional_data = '%s %s'",
+	"script_url": "",
+	"description":"",
+        "active": "True",
+        "note": "",
+	"module_name":"core",
+	"external_modules": [
+	  {
+	    "name":"datetime",
+	    "active":"True"
+	  },
+	  {
+	    "name":"os",
+	    "active":"True"
+	  }
+	],
+        "calls": [
+          {
+            "language": "en-US",
+	    "response": "0",
+            "active": "True",
+            "words": [
+              {
+                "text": "whats",
+                "variable_length": "0",
+                "optional": "False",
+                "position": 1
+              },
+              {
+                "text": "the",
+                "variable_length": "0",
+                "optional": "False",
+                "position": 2
+              },
+              {
+                "text": "time",
+                "variable_length": "0",
+                "optional": "False",
+                "position": 3 
+              },
+              {
+                "text": "in",
+                "variable_length": "0",
+                "optional": "False",
+                "position": 4 
+              },
+              {
+                "text": "var",
+                "variable_length": "2",
+                "optional": "False",
+                "position": 5 
+              }
+            ]
+          },
+	  {
+            "language": "en-US",
+	    "response": "100",
+            "active": "True",
+            "words": [
+              {
+                "text": "The time in %s is %s.",
+                "variable_length": "0",
+                "optional": "False",
+                "position": 1
+              }
+            ]
+          }
+	]
+      },
+      {
+        "name": "create word",
+      	"code": "CRWO0004",
+	"programming_language":"sql",
+        "definition": "cursor.exec(\" INSERT INTO words (text) VALUES (?); \")",
+	"script_url": "",
+	"description":"",
+        "active": "True",
+        "note": "",
+	"module_name":"core",
+	"external_modules":[],
+        "calls": [
+          {
+            "language": "en-US",
+	    "response": "0",
+            "active": "True",
+            "words": [
+              {
+                "text": "create",
+                "variable_length": "0",
+                "optional": "True",
+                "position": 1
+              },
+              {
+                "text": "insert",
+                "variable_length": "0",
+                "optional": "True",
+                "position": 1
+              },
+              {
+                "text": "word",
+                "variable_length": "0",
+                "optional": "False",
+                "position": 2
+              },
+              {
+                "text": "var",
+                "variable_length": "1",
+                "optional": "False",
+                "position": 3 
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "command": {
+        "name": "skeleton",
+	"code": "SKEL9999",
+        "programming_language":"python3",
+        "definition": "print(%s)",
+	"script_url": "",
+	"description":"",
+        "active": "True",
+        "note": "Testing command",
+	"module_name":"core",
+	"external_modules":[],
+        "calls": [
+          {
+            "language": "en-US",
+	    "response": "0",
+            "active": "True",
+            "words": [
+              {
+                "text": "execute",
+                "variable_length": "0",
+                "optional": "False",
+                "position": 1
+              },
+              {
+                "text": "var",
+                "variable_length": "2",
+                "optional": "True",
+                "position": 2
+              },
+              {
+                "text": "var",
+                "variable_length": "3",
+                "optional": "True",
+                "position": 3
+              },
+              {
+                "text": "var",
+                "variable_length": "3",
+                "optional": "True",
+                "position": 4
+              }
+            ]
+          }
+	]
+      }
+}

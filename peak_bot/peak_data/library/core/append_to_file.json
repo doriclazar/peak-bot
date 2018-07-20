@@ -1,0 +1,67 @@
+{
+  "command": {
+        "name": "append to file",
+      	"code": "APFI0005",
+        "programming_language":"bash",
+        "definition": "echo {1} >> {0}",
+	"script_url": "",
+	"description":"",
+        "active": "True",
+        "note": "Testing command",
+	"module_name":"core",
+	"external_modules":[],
+        "calls": [
+          {
+            "language": "en-US",
+	    "response": "0",
+            "active": "True",
+            "words": [
+              {
+                "text": "append",
+                "variable_length": "0",
+                "optional": "False",
+                "position":1
+	      },
+              {
+                "text": "to",
+                "variable_length": "0",
+                "optional": "False",
+                "position":2 
+              },
+              {
+                "text": "var",
+                "variable_length": "1",
+                "optional": "False",
+                "position":3 
+              }
+            ]
+          },
+	  {
+            "language": "en-US",
+	    "response": "26",
+            "active": "True",
+            "words": [
+              {
+                "text": "What's the input?",
+                "variable_length": "0",
+                "optional": "False",
+                "position":1
+	      }
+	    ]
+	  },
+	  {
+            "language": "en-US",
+	    "response": "100",
+            "active": "True",
+            "words": [
+              {
+                "text": "Written to file",
+                "variable_length": "0",
+                "optional": "False",
+                "position":1
+	      }
+	    ]
+	  }
+	]
+      }
+}

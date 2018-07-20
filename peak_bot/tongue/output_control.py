@@ -22,6 +22,7 @@ class OutputControl:
     output_group: 0
     '''
     WELCOME_MSG = ('Application started.', 0, 3, 1)
+    PLAT_NOT_SUP = ('{0} is not supported.', 0, 6, 5)
     SPLITTER = ('-------------------------------', 0, 3, 6)
     '''
     PeakBot class
