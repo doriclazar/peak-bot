@@ -10,7 +10,7 @@ Peak 63 and [Peak 30] are in development, and should be publised along with exte
    * [Prequisites](#prequisites)
       * [Arch Linux](#arch-linux)
       * [Ubuntu, Debian, Linux Mint](ubuntu-debian-linux-mint)
-      * [Fedora, CentOS](#fedora-centOS)
+      * [Fedora, CentOS](#fedora-centos)
       * [Windows](#windows)
    * [Installation](#installation)
    * [Usage](#usage)
@@ -27,7 +27,7 @@ Peak Bot is written in python3, and relies on sqlite3 to store it's data.
 It currently uses Google's Speech-to-Text Client Library for python and requires internet connection.
 Default input and settings are using .JSON format.
 
-## Prerequisites
+## Prequisites
 To satisfy the current dependencies, make sure you have python3, pip3, and portaudio installed.
 
 ### Arch Linux
