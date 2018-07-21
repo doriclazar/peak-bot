@@ -49,15 +49,19 @@ class PeakBot:
         oc.print(oc.MOD_COM_SET_ATT)
 
         (self.module_dicts, self.directories) = self.file_handler.read_library(library_path) 
+        print('GOT MODULE DICT: \n' + str(self.module_dicts))
+        print('\n \n GOT DIRECTORIES: \n' + str(self.directories))
         try:
             for directory in self.directories:
+                print('\n DIRECTORY CHECK: \n' + str(directory))
                 if ('{0}.json'.format(directory)) in os.listdir(library_path):
-                    oc.print(oc.JSON_EXISTS, (directory, library_path))
+                    oc.print(oc.JSON_EXISTS, (directory, library_path, directory))
                     (command_dict, self.skip_directories) = self.file_handler.read_library('{0}{1}/'.format(library_path, directory))
                     self.command_list.append(command_dict)
                     oc.print(oc.DIR_WITH_COMS, (directory,))
                     oc.print(oc.SKIP_DIRS, (self.skip_directories,))
                 else:
+                    print('\n ITS DIRECTORY...: \n')
                     self.skip_directories.append(directory)
                     self.directories.remove(directory)
                     oc.print(oc.NO_JSON_FILE, (directory,))
@@ -79,13 +83,13 @@ class PeakBot:
         #except Exception as e:
             self.output_control.print(self.output_control.NOT_INIT, ('Database', str(e)))
 
-    def init_listener(self):
+    def init_listener(self, audio_wav_path):
         '''
         Initiates a new listener.
         '''
         self.output_control.print(self.output_control.INIT_ATT, ('listener',))
         try:
-            self.listener = Listener(self.output_control, self.audio_settings_dict)
+            self.listener = Listener(self.output_control, self.audio_settings_dict, audio_wav_path)
             self.output_control.print(self.output_control.INIT, ('Listener',))
         except Exception as e:
             self.output_control.print(self.output_control.NOT_INIT, ('Listener', str(e)))
@@ -214,7 +218,7 @@ class PeakBot:
         self.set_modules_and_commands(fundamental_directories[3])
 
         self.init_database()
-        self.init_listener()
+        self.init_listener(fundamental_directories[4])
         self.init_command_finder()
         self.init_transcriber(self.command_finder.expected_calls)
         self.init_executor()

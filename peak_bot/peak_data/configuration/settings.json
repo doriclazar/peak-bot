@@ -1,0 +1,40 @@
+﻿{
+  "databases": [
+    {
+      "database_name": "local_rman_lite",
+      "database_engine": "sqlite3",
+      "database_dir": "",
+      "database_filename": "sqlite_database.db",
+      "database_user": "",
+      "database_password": "",
+      "database_host": "",
+      "database_port": "",
+      "database_active": "True"
+    },
+    {
+      "database_name": "local_rman_mysql",
+      "database_engine": "MySql/MariaDB",
+      "database_dir": "",
+      "database_filename": "",
+      "database_user": "",
+      "database_password": "",
+      "database_host": "",
+      "database_port": "",
+      "database_active": "False"
+    }
+  ],
+  "speech_apis": [
+    {
+      "name": "Google Speech API",
+      "code": "GOOGL",
+      "credentials_path": "",
+      "active": "True"
+    },
+    {
+      "name": "Bing Speech API",
+      "code": "BING",
+      "credentials_path": "",
+      "active": "False"
+    }
+  ]
+}

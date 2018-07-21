@@ -19,7 +19,6 @@ class Listener:
     def set_values(self, audio_settings_dict):
         for audio_values in audio_settings_dict['audio_values']:
             if audio_values['active'] == 'True':
-                self.file_path = audio_values['file_path']
                 self.format = self.portaudio_formats[audio_values['format']]
                 self.threshold = int(audio_values['threshold'])
                 self.sample_rate = int(audio_values['rate'])
@@ -67,13 +66,14 @@ class Listener:
     def record(self):
         sample_width, audio_data = self.listen()
         data = pack('<' + ('h'*len(audio_data)), *audio_data)
-        wave_file = wave.open(self.file_path, 'wb'):
+        wave_file = wave.open(self.file_path, 'wb')
         wave_file.setnchannels(1)
         wave_file.setsampwidth(sample_width)
         wave_file.setframerate(self.sample_rate)
         wave_file.writeframes(audio_data)
         wave_file.close()
 
-    def __init__(self, output_control, audio_settings_dict):
+    def __init__(self, output_control, audio_settings_dict, audio_wav_path):
         self.output_control = output_control
         self.set_values(audio_settings_dict)
+        self.file_path = audio_wav_path

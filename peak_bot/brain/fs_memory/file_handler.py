@@ -27,7 +27,7 @@ class FileHandler:
         for file_name in os.listdir(file_path):
             oc.print(oc.FILE_CHECK, (file_name,))
             if '.json' in file_name:
-                data_dicts.append(self.load_from_path('{0}/{1}'.format(file_path, file_name)))
+                data_dicts.append(self.load_from_path('{0}{1}'.format(file_path, file_name)))
                 oc.print(oc.FILE_ADDED_COMS)
             elif '.' in file_name:
                 oc.print(oc.WRONG_EXT)
