@@ -2,14 +2,14 @@
 import os
 import sys
 
-from .brain.db_memory.database import Database
-from .brain.fs_memory.file_handler import FileHandler
-from .brain.processing.command_finder import CommandFinder
-from .brain.processing.executor import Executor
-from .ears.listener import Listener
-from .ears.input_control import InputControl
-from .antenna.google_transcriber import GoogleTranscriber
-from .antenna.bing_transcriber import BingTranscriber
+from brain.db_memory.database import Database
+from brain.fs_memory.file_handler import FileHandler
+from brain.processing.command_finder import CommandFinder
+from brain.processing.executor import Executor
+from ears.listener import Listener
+from ears.input_control import InputControl
+from antenna.google_transcriber import GoogleTranscriber
+from antenna.bing_transcriber import BingTranscriber
 
 class PeakBot:
     module_dicts = []
@@ -49,11 +49,8 @@ class PeakBot:
         oc.print(oc.MOD_COM_SET_ATT)
 
         (self.module_dicts, self.directories) = self.file_handler.read_library(library_path) 
-        print('GOT MODULE DICT: \n' + str(self.module_dicts))
-        print('\n \n GOT DIRECTORIES: \n' + str(self.directories))
         try:
             for directory in self.directories:
-                print('\n DIRECTORY CHECK: \n' + str(directory))
                 if ('{0}.json'.format(directory)) in os.listdir(library_path):
                     oc.print(oc.JSON_EXISTS, (directory, library_path, directory))
                     (command_dict, self.skip_directories) = self.file_handler.read_library('{0}{1}/'.format(library_path, directory))
@@ -61,7 +58,6 @@ class PeakBot:
                     oc.print(oc.DIR_WITH_COMS, (directory,))
                     oc.print(oc.SKIP_DIRS, (self.skip_directories,))
                 else:
-                    print('\n ITS DIRECTORY...: \n')
                     self.skip_directories.append(directory)
                     self.directories.remove(directory)
                     oc.print(oc.NO_JSON_FILE, (directory,))
@@ -203,6 +199,7 @@ class PeakBot:
             args = args + self.get_additional_args(len(args))
 
             self.executor.execute_command(self.command_finder.command_id, args)
+            os.remove(self.listener.file_path)
             self.database.connection.commit()
             self.exit = True
 
