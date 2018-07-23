@@ -160,6 +160,7 @@ class PeakBot:
             '''
 
             response_index += 1
+            print(response_text)
             self.listener.record()
             #if len(expected_answers) > 0:
                 #send to transcriber as expected words!!!
@@ -199,7 +200,8 @@ class PeakBot:
             args = args + self.get_additional_args(len(args))
 
             self.executor.execute_command(self.command_finder.command_id, args)
-            os.remove(self.listener.file_path)
+            if os.path.exists(self.listener.file_path):
+                os.remove(self.listener.file_path)
             self.database.connection.commit()
             self.exit = True
 

@@ -14,6 +14,8 @@ class GoogleTranscriber:
         with io.open(file_name, 'rb') as audio_file:
             audio = types.RecognitionAudio(content=audio_file.read())
         response = self.client.recognize(self.config, audio)
+        if os.path.exists(audio_path):
+            os.remove(audio_path)
         return response.results[0].alternatives
 
     def __init__(self, output_control, audio_settings_dict, expected_calls):

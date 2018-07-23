@@ -27,7 +27,7 @@ def main():
     audio_base_path = "peak_data/configuration/audio_base.json"
     lang_base_path = "peak_data/configuration/lang_base.json"
     library_path = "peak_data/library/"
-    audio_wav_path = ".temp_recording.wav"
+    audio_wav_path = "brain/fs_memory/.temp_recording.wav"
     fundamental_directories = (settings_path, audio_base_path, lang_base_path, library_path, audio_wav_path)
     bot = PeakBot(fundamental_directories, oc)
         
