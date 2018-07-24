@@ -147,10 +147,6 @@ class PeakBot:
         while response_index < len(noninitial_responses):
             response_number = noninitial_responses[response_index][0]
             response_text = noninitial_responses[response_index][1]
-
-            #This was COUNT(word.id) .... ????
-            #number_of_words = noninitial_responses[response_index][2]
-
             '''
             expected_answers=()
             if number_of_words>1:
