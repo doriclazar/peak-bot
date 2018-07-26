@@ -138,7 +138,34 @@ class PeakBot:
             self.output_control.print(self.output_control.NOT_INIT, ('Executor', str(e),))
             sys.exit()
 
-        #RESPONSE INDEX IS THE NUMBER OF ALREADY INPUTED ARGUMENTS (BY INITIAL CALL) - RARELY 0!!! 
+    def init_connection(self):
+        '''
+        Initiates a new executor.
+        '''
+        self.output_control.print(self.output_control.INIT_ATT, ('connection',))
+        # Get the bot name from the database.
+        bot_data=('Happy Worm', '1.0.1a1')
+        connection_data=('no_code','no_ip')
+        try:
+            for connection in self.settings_dict['connections']:
+                if connection['connection_active']:
+                    connection_data = (connection['code'], connection['server_ip'])
+                    break
+            self.connection = PeakConnection(self.output_control, bot_data, connection_data)
+            self.output_control.print(self.output_control.INIT, ('Connection',))
+        except Exception as e:
+            self.output_control.print(self.output_control.NOT_INIT, ('Connection', str(e),))
+
+
+    def update(self):
+        json_response=self.connection.check_for_updates()
+        print(json_response)
+
+    
+    def download_command(self):
+        json_response=self.connection.reqest_command('TMRQ0003')
+        print(json_response)
+
     def get_additional_args(self, response_index):
         additional_args = ()
         noninitial_responses = self.database.cursor.execute(self.database.query_list.select_responses_by_command_id.text, (str(self.command_finder.command_id), 26, 50)).fetchall()
@@ -219,6 +246,7 @@ class PeakBot:
         self.init_transcriber(self.command_finder.expected_calls)
         self.init_executor()
 
+        self.download_command()
         self.run_peak_bot()
 
         self.database.connection.close()

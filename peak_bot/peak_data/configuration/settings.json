@@ -1,4 +1,21 @@
 ﻿{
+<<<<<<< HEAD
+=======
+  "connections": [
+	      {
+      "server_type": "peak_30",
+      "server_ip": "",
+      "code": "000000",
+      "connection_active": "True"
+	      },
+      {
+      "server_type": "peak_62",
+      "server_ip": "",
+      "bot_code": "",
+      "connection_active": "False"
+      }
+   ],
+>>>>>>> d368281... Enabled POST request with CSRF token.
   "databases": [
     {
       "database_name": "local_rman_lite",
