@@ -10,6 +10,7 @@ from ears.listener import Listener
 from ears.input_control import InputControl
 from antenna.google_transcriber import GoogleTranscriber
 from antenna.bing_transcriber import BingTranscriber
+from antenna.peak_connection import PeakConnection
 
 class PeakBot:
     module_dicts = []
@@ -39,6 +40,7 @@ class PeakBot:
                 oc.print(oc.DB_PATH_SET)
         except Exception as e:
             oc.print(oc.DB_PATH_NOT_SET, (str(e),))
+            sys.exit
 
     def set_modules_and_commands(self, library_path):
         '''
@@ -122,7 +124,7 @@ class PeakBot:
             self.transcriber = transcriber_type(self.output_control, self.audio_settings_dict, expected_calls)
             self.output_control.print(self.output_control.INIT, ('Transcriber',))
         except Exception as e:
-            self.output_control.print(self.output_control.TRANSC_NOT_INIT, ('Transcriber', str(e)))
+            self.output_control.print(self.output_control.NOT_INIT, ('Transcriber', str(e)))
             sys.exit()
 
 
@@ -137,6 +139,27 @@ class PeakBot:
         except Exception as e:
             self.output_control.print(self.output_control.NOT_INIT, ('Executor', str(e),))
             sys.exit()
+
+    def init_connection(self):
+        '''
+        Initiates a new executor.
+        '''
+        self.output_control.print(self.output_control.INIT_ATT, ('connection',))
+        # Get the bot name from the database.
+        bot_data=('no_name', '1.0.1a1')
+        connection_data=('no_code','no_ip')
+        try:
+            for connection in self.settings_dict['connections']:
+                if connection['connection_active']:
+                    connection_data = (connection['code'], connection['server_ip'])
+                    break
+            self.connection = PeakConnection(self.output_control, bot_data, connection_data)
+            self.output_control.print(self.output_control.INIT, ('Connection',))
+        except Exception as e:
+            self.output_control.print(self.output_control.NOT_INIT, ('Connection', str(e),))
+
+        finally:
+            print(self.connection.reqest_command)
 
         #RESPONSE INDEX IS THE NUMBER OF ALREADY INPUTED ARGUMENTS (BY INITIAL CALL) - RARELY 0!!! 
     def get_additional_args(self, response_index):
@@ -217,6 +240,7 @@ class PeakBot:
         self.init_command_finder()
         self.init_transcriber(self.command_finder.expected_calls)
         self.init_executor()
+        self.init_connection()
 
         self.run_peak_bot()
 

@@ -1,4 +1,18 @@
 ﻿{
+  "connections": [
+	      {
+      "server_type": "peak_30",
+      "server_ip": "35.202.63.188:8080",
+      "code": "",
+      "connection_active": "True"
+	      },
+      {
+      "server_type": "peak_62",
+      "server_ip": "",
+      "bot_code": "",
+      "connection_active": "False"
+      }
+   ],
   "databases": [
     {
       "database_name": "local_rman_lite",
