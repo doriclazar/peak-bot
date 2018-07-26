@@ -146,7 +146,7 @@ class PeakBot:
         '''
         self.output_control.print(self.output_control.INIT_ATT, ('connection',))
         # Get the bot name from the database.
-        bot_data=('no_name', '1.0.1a1')
+        bot_data=('Happy Worm', '1.0.1a1')
         connection_data=('no_code','no_ip')
         try:
             for connection in self.settings_dict['connections']:
@@ -158,8 +158,15 @@ class PeakBot:
         except Exception as e:
             self.output_control.print(self.output_control.NOT_INIT, ('Connection', str(e),))
 
-        finally:
-            print(self.connection.reqest_command)
+
+    def update(self):
+        json_response=self.connection.check_for_updates()
+        print(json_response)
+
+    
+    def download_command(self):
+        json_response=self.connection.reqest_command('TMRQ0003')
+        print(json_response)
 
         #RESPONSE INDEX IS THE NUMBER OF ALREADY INPUTED ARGUMENTS (BY INITIAL CALL) - RARELY 0!!! 
     def get_additional_args(self, response_index):
@@ -242,6 +249,7 @@ class PeakBot:
         self.init_executor()
         self.init_connection()
 
+        self.download_command()
         self.run_peak_bot()
 
         self.database.connection.close()

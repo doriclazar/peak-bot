@@ -2,8 +2,8 @@
   "connections": [
 	      {
       "server_type": "peak_30",
-      "server_ip": "35.202.63.188:8080",
-      "code": "",
+      "server_ip": "",
+      "code": "000000",
       "connection_active": "True"
 	      },
       {
