@@ -1,5 +1,4 @@
-{
-  "command": {
+{"command": {
     "name": "ping",
     "code": "PING0011",
     "programming_language": "bash",
@@ -8,7 +7,7 @@
     "description":"",
     "active": "True",
     "note": "",
-    "module_name": "networking",
+    "module_code":"NETWORK",
     "external_modules": [],
     "calls": [
       {

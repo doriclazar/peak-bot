@@ -19,7 +19,7 @@
 	"description": "Shuts down the program.",
         "active": "True",
         "note": "",
-	"module_name":"core",
+	"module_code":"CORE",
 	"external_modules":[],
         "calls": [
           {
@@ -124,7 +124,7 @@
 	"description":"Allows user to create a new command. Testing only. Requires multiple string transactions.",
         "active": "True",
         "note": "",
-	"module_name":"core",
+	"module_code":"CORE",
 	"external_modules":[],
         "calls": [
           {
@@ -205,7 +205,7 @@
 	"description":"",
         "active": "True",
         "note": "",
-	"module_name":"core",
+	"module_code":"CORE",
 	"external_modules": [
 	  {
 	    "name":"datetime",
@@ -278,7 +278,7 @@
 	"description":"",
         "active": "True",
         "note": "",
-	"module_name":"core",
+	"module_code":"CORE",
 	"external_modules":[],
         "calls": [
           {
