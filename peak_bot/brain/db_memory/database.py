@@ -42,7 +42,8 @@ class Database:
                     cursor = self.cursor,
                     code = language_data['code'],
                     name = language_data['name'],
-                    active = language_data['active'],
+                    #active = language_data['active'],
+                    active = True,
                     output_control = self.output_control)
             language.insert()
 
@@ -62,7 +63,8 @@ class Database:
                 script_url = command_data['script_url'],
                 definition = command_data['definition'],
                 description = command_data['description'],
-                active = command_data['active'],
+                #active = command_data['active'],
+                active = True,
                 output_control = self.output_control)
         command.insert()
         oc.print(oc.COM_OK, (command.name,))
@@ -70,7 +72,8 @@ class Database:
             external_module = ExternalModule(self.query_list,
                     cursor = self.cursor,
                     name = external_module_data['name'],
-                    active = external_module_data['active'],
+                    #active = external_module_data['active'],
+                    active = True,
                     output_control = self.output_control)
             external_module.insert()
             oc.print(oc.EXM_OK, (external_module.name,))
@@ -89,14 +92,16 @@ class Database:
                     command_id = command.uid,
                     language_code = call_data['language'],
                     response = call_data['response'],
-                    active = call_data['active'],
+                    #active = call_data['active'],
+                    active = True,
                     output_control = self.output_control)
             call.insert()
             for word_data in call_data['words']:
                 word = Word(self.query_list,
                         cursor = self.cursor,
                         text = word_data['text'],
-                        active = call.active,
+                        #active = call.active,
+                        active = True,
                         output_control = self.output_control)
                 word.insert()
                 combo = Combo(self.query_list,
@@ -122,7 +127,8 @@ class Database:
                 name = module_meta['name'],
                 code = module_meta['code'],
                 description = module_meta['description'],
-                active = module_meta['active'],
+                #active = module_meta['active'],
+                active = True,
                 output_control = self.output_control)
         module.insert()
         for command_data in module_dict['module']['commands']:
@@ -141,7 +147,7 @@ class Database:
         for command_dicts in command_list:
             for command_dict in command_dicts:
                 #self.output_control.print(self.output_control.COM_DICT, (json.dumps(command_dict, sort_keys=True, indent=2),))
-                module_uid = self.cursor.execute(self.query_list.select_module_by_name.text, (command_dict['command']['module_name'],)).fetchone()
+                module_uid = self.cursor.execute(self.query_list.select_module_by_code.text, (command_dict['command']['module_code'],)).fetchone()
                 self.insert_command_data(command_dict['command'], module_uid[0])
 
         self.query_list.construct_skc_query(self.skc_level)

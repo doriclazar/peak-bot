@@ -8,7 +8,7 @@
 	"description":"",
         "active": "True",
         "note": "Testing command",
-	"module_name":"core",
+	"module_code":"CORE",
 	"external_modules":[],
         "calls": [
           {

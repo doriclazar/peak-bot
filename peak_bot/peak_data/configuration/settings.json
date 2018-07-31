@@ -1,15 +1,31 @@
 ﻿{
+  "bot_defaults":
+  {
+  	"bot_name":"Happy Worm",
+	"bot_code":"S2FARM1",
+       	"bot_professions":
+	[
+	{
+	"profession_name":"Corn Farmers",
+	"profession_code":"CORNFARM"
+	},
+	{
+	"profession_name":"Core",
+	"profession_code":"CORE"
+	}
+	]
+  }, 
   "connections": [
 	      {
       "server_type": "peak_30",
-      "server_ip": "",
+      "server_ip": "35.202.63.188:8080",
       "code": "000000",
       "connection_active": "True"
 	      },
       {
       "server_type": "peak_62",
       "server_ip": "",
-      "bot_code": "",
+      "code": "",
       "connection_active": "False"
       }
    ],

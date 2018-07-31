@@ -163,11 +163,10 @@ class QueryList:
         LEFT JOIN external_modules AS em ON em.id = im.external_module_id \
         WHERE im.command_id = ?;')
 
-
-    select_module_by_name = Query(2, ('SQLite3', 'MySQL'), 'Gets the modules uid.', ' \
+    select_module_by_code = Query(2, ('SQLite3', 'MySQL'), 'Gets the modules uid.', ' \
         SELECT mo.id AS module_id \
         FROM modules AS mo \
-        WHERE mo.name = ?;')
+        WHERE mo.code = ?;')
 
     select_import = Query(8, ('SQLite3', 'MySQL'), 'Selects an import ', \
         'SELECT im.* \

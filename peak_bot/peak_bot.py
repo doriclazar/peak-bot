@@ -149,6 +149,8 @@ class PeakBot:
         bot_data=('Happy Worm', '1.0.1a1')
         connection_data=('no_code','no_ip')
         try:
+            bd = self.settings_dict['bot_defaults']
+            bot_data = (bd['bot_name'], bd['bot_code'], bd['bot_professions'])
             for connection in self.settings_dict['connections']:
                 if connection['connection_active']:
                     connection_data = (connection['code'], connection['server_ip'])
@@ -158,16 +160,18 @@ class PeakBot:
         except Exception as e:
             self.output_control.print(self.output_control.NOT_INIT, ('Connection', str(e),))
 
-
     def update(self):
-        json_response=self.connection.check_for_updates()
-        print(json_response)
+        new_commands = []
+        professions = self.settings_dict['bot_defaults']['bot_professions']
+        for profession in professions:
+            new_commands.append(self.connection.update_profession(profession['profession_code']))
+        for new_command in new_commands:
+            for command_code in new_command['commands_codes']:
+                command_data = self.connection.request_command(command_code['code'])['command']
+                module_code = command_data['module_code']
+                self.database.insert_command_data(command_data, module_code)
 
-    
-    def download_command(self):
-        json_response=self.connection.reqest_command('TMRQ0003')
-        print(json_response)
-
+        
         #RESPONSE INDEX IS THE NUMBER OF ALREADY INPUTED ARGUMENTS (BY INITIAL CALL) - RARELY 0!!! 
     def get_additional_args(self, response_index):
         additional_args = ()
@@ -248,8 +252,9 @@ class PeakBot:
         self.init_transcriber(self.command_finder.expected_calls)
         self.init_executor()
         self.init_connection()
+        
+        self.update()
 
-        self.download_command()
         self.run_peak_bot()
 
         self.database.connection.close()
