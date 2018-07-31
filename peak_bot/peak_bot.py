@@ -171,8 +171,6 @@ class PeakBot:
                 module_code = command_data['module_code']
                 self.database.insert_command_data(command_data, module_code)
 
-        
-        #RESPONSE INDEX IS THE NUMBER OF ALREADY INPUTED ARGUMENTS (BY INITIAL CALL) - RARELY 0!!! 
     def get_additional_args(self, response_index):
         additional_args = ()
         noninitial_responses = self.database.cursor.execute(self.database.query_list.select_responses_by_command_id.text, (str(self.command_finder.command_id), 26, 50)).fetchall()
