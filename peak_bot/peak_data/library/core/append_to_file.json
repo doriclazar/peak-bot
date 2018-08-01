@@ -36,9 +36,47 @@
               }
             ]
           },
+          {
+            "language": "en-US",
+	    "response": "1",
+            "active": "True",
+            "words": [
+              {
+                "text": "append",
+                "variable_length": "0",
+                "optional": "False",
+                "position":1
+	      }
+	    ]
+          },
 	  {
             "language": "en-US",
 	    "response": "26",
+            "active": "True",
+            "words": [
+              {
+                "text": "What's the file name?",
+                "variable_length": "0",
+                "optional": "False",
+                "position":1
+	      },
+              {
+                "text": "file1.txt",
+                "variable_length": "0",
+                "optional": "False",
+                "position":2
+	      },
+              {
+                "text": "file2.txt",
+                "variable_length": "0",
+                "optional": "False",
+                "position":3
+	      }
+	    ]
+	  },
+	  {
+            "language": "en-US",
+	    "response": "27",
             "active": "True",
             "words": [
               {
@@ -46,6 +84,18 @@
                 "variable_length": "0",
                 "optional": "False",
                 "position":1
+	      },
+              {
+                "text": "Once upon a time",
+                "variable_length": "0",
+                "optional": "False",
+                "position":2
+	      },
+              {
+                "text": "Dear mr ",
+                "variable_length": "0",
+                "optional": "False",
+                "position":3
 	      }
 	    ]
 	  },

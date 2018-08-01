@@ -1,8 +1,15 @@
 import os
+import pyaudio
+import wave
+from struct import pack
+from ctypes import CFUNCTYPE, cdll, c_char_p, c_int
+
+from google.cloud import texttospeech
 
 class OutputControl:
     #STRING_NAME = ('Some text', output GROUP, VERBOSITY required to print, success SIGN)
     signs = {}
+#    txt_to_speech = True
     txt_to_speech = False
     '''
     output_groups:
@@ -21,6 +28,7 @@ class OutputControl:
     Main/General
     output_group: 0
     '''
+    RESPONSE = ('{0} \n {1}', 0, 0, 1)
     WELCOME_MSG = ('Application started.', 0, 3, 1)
     PLAT_NOT_SUP = ('{0} is not supported.', 0, 6, 5)
     SPLITTER = ('-------------------------------', 0, 3, 6)
@@ -29,7 +37,7 @@ class OutputControl:
     output_group: 1 
     '''
     SETT_FILE_NOT_FOUND = ('File {0} not found.', 2, 3, 4)
-    USING_DB = ('Using database {0}', 1, 2, 1)
+    USING_DB = ('Using database {0}', 1, 3, 1)
     ENGINE_NOT_SUP = ('Engine {0} is not yet supported. Skipping...', 1, 3, 0)
     UNKNOWN_ENGINE = ('Unknown database engine: {0}. Skipping...', 1, 3, 0)
     INACTIVE_DB = ('Database {0} is not active. Skipping...', 1, 3, 0)
@@ -75,7 +83,7 @@ class OutputControl:
     Listener class
     output_group:4 
     '''
-    EARS_READY = ('Ready for input...', 4, 1, 1)
+    EARS_READY = ('Ready for input...', 4, 2, 1)
     VOICE_DTC = ('Voice detected. Listening started...', 4, 4, 1)
     SILENCE = ('Silence: {0}/25.', 4, 4, 4)
     '''
@@ -108,8 +116,8 @@ class OutputControl:
     UNEQUAL_WORDS_NO = ('This command have {0} words. {1} provided.', 5, 3, 4)
     CALL_PASS = ('Call passed.', 5, 3, 1)
     CALL_DIDNT_PASS = ('Call didn\'t pass.', 5, 3, 5)
-    RECOGN_COMS = ('Recognized commands:', 5, 1, 0)
-    RECOGN_COM_DATA = ('ID: {0}  Text: {1}', 5, 1, 1)
+    RECOGN_COMS = ('Recognized commands:', 5, 2, 0)
+    RECOGN_COM_DATA = ('ID: {0}  Text: {1}', 5, 2, 1)
     NO_COMS_PASSED = ('No commands passed', 5, 1, 5)
     TIMED_OUT = ('Audio read timed out.\nException: {0}', 5, 1, 5)
     COULD_NOT_UNDRS = ('Could not understand audio.\nException: {0}', 5, 1, 5)
@@ -143,12 +151,15 @@ class OutputControl:
     output_group: 8
     '''
     CHAR_ADDED = ('Added "{0}" to position {1}.', 8, 4, 1)
-    
 
     '''
     Output function with 5 level verbosity (0-4).
     Level 5 is comment alike... It never prints.
     '''
+
+    def py_error_handler(self, file_path, line, definition, err, fmt):
+        pass
+
     def print(self, output, args=()):
         '''
 	Checks if verbosity is larger than potential output.
@@ -158,7 +169,38 @@ class OutputControl:
         if int(output[2]) <= int(self.verbosity_level) and output[1] in self.output_groups:
             text = output[0].format(*args)
             if self.txt_to_speech:
-                pass
+                client = texttospeech.TextToSpeechClient()
+                input_text = texttospeech.types.SynthesisInput(text='{0}'.format(text))
+                voice = texttospeech.types.VoiceSelectionParams(language_code='en-US', ssml_gender=texttospeech.enums.SsmlVoiceGender.FEMALE)
+                audio_config = texttospeech.types.AudioConfig(audio_encoding=texttospeech.enums.AudioEncoding.LINEAR16)
+                response = client.synthesize_speech(input_text, voice, audio_config)
+                response.audio_content
+                audio_path = 'output.wav'
+                with open(audio_path, 'wb') as out:
+                    out.write(response.audio_content)
+
+                chunk = 1024
+                audio_response = wave.open(audio_path,"rb")
+                self.asound.snd_lib_error_set_handler(self.c_error_handler)
+                py_audio = pyaudio.PyAudio()
+                py_stream = py_audio.open(format = py_audio.get_format_from_width(audio_response.getsampwidth()),
+                                channels = audio_response.getnchannels(),
+                                rate = audio_response.getframerate(),
+                                output = True)
+                audio_data = audio_response.readframes(chunk)
+
+                while audio_data:
+                    py_stream.write(audio_data)
+                    audio_data = audio_response.readframes(chunk)
+
+                py_stream.stop_stream()
+                py_stream.close()
+                py_audio.terminate()
+
+
+                if os.path.exists(audio_path):
+                    os.remove(audio_path)
+                
             else:
                 # To remove tab-signs from command output: 
                 # Uncomment:
@@ -170,4 +212,7 @@ class OutputControl:
     def __init__(self, output_groups, verbosity_level):
         self.output_groups = output_groups
         self.verbosity_level = verbosity_level
+        self.asound = cdll.LoadLibrary('libasound.so')
+        handler_def = CFUNCTYPE(None, c_char_p, c_int, c_char_p, c_int, c_char_p)
+        self.c_error_handler = handler_def(self.py_error_handler)
     

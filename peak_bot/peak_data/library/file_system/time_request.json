@@ -1,0 +1,49 @@
+{
+  "command": {
+    "module_code": "FILESYS",
+    "definition": "self.returned_args = (datetime.datetime.now(),); self.additional_data = '%s %s'",
+    "external_modules": [],
+    "programming_language": "python3",
+    "categories": [
+      {
+        "description": "Quick commands for getting and setting a time values.",
+        "picture": "http://none.com",
+        "code": "TIMEDATE",
+        "name": "Time and Date"
+      }
+    ],
+    "script_url": "none.com",
+    "note": "Imported from peak_30 2018-07-31 01:58:56.003451+00:00.",
+    "active": "True",
+    "name": "time request",
+    "code": "TMRQ0004",
+    "calls": [
+      {
+        "response": 0,
+        "active": "True",
+    	"language": "en-US",
+        "words": [
+          {
+            "variable_length": 0,
+            "optional": "False",
+            "position": 1,
+            "text": "whats"
+          },
+          {
+            "variable_length": 0,
+            "optional": "False",
+            "position": 2,
+            "text": "the"
+          },
+          {
+            "variable_length": 0,
+            "optional": "False",
+            "position": 3,
+            "text": "time"
+          }
+        ]
+      }
+    ],
+    "description": "Asking a local bot about time."
+  }
+}

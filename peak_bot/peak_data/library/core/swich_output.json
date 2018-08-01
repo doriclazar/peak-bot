@@ -1,0 +1,67 @@
+{
+  "command": {
+        "name": "switch output",
+      	"code": "SWOUT0005",
+        "programming_language":"python3",
+        "definition": "self.output_control.txt_to_speech = not self.output_control.txt_to_speech",
+	"script_url": "",
+	"description":"Switches between audio and text output.",
+        "active": "True",
+        "note": "",
+	"module_code":"CORE",
+	"external_modules":[],
+        "calls": [
+          {
+            "language": "en-US",
+	    "response": "0",
+            "active": "True",
+            "words": [
+              {
+                "text": "switch",
+                "variable_length": "0",
+                "optional": "False",
+                "position":1
+	      },
+              {
+                "text": "output",
+                "variable_length": "0",
+                "optional": "False",
+                "position":2 
+              }
+	    ]
+          },
+          {
+            "language": "en-US",
+	    "response": "1",
+            "active": "True",
+            "words": [
+              {
+                "text": "toggle",
+                "variable_length": "0",
+                "optional": "False",
+                "position":1
+	      },
+              {
+                "text": "output",
+                "variable_length": "0",
+                "optional": "False",
+                "position":2 
+              }
+	    ]
+          },
+	  {
+            "language": "en-US",
+	    "response": "100",
+            "active": "True",
+            "words": [
+              {
+                "text": "Output is successfully switched.",
+                "variable_length": "0",
+                "optional": "False",
+                "position":1
+	      }
+	    ]
+	  }
+	]
+      }
+}

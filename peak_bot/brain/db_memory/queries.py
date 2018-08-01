@@ -223,14 +223,20 @@ class QueryList:
         WHERE ca.position = ?, co.module_id = ? AND w.language_id = ?;')
 
     select_responses_by_command_id = Query(10, ('SQLite3', 'MySQL'), 'Used for collecting responses with a recognized command', ' \
-        SELECT resp.response, wo.text \
+        SELECT resp.id, resp.response, wo.text \
         FROM calls AS resp \
         LEFT JOIN commands AS co ON resp.command_id = co.id \
         LEFT JOIN combos AS cb ON cb.call_id = resp.id \
-        LEFT JOIN words AS wo ON wo.id = cb.word_id \
+        LEFT JOIN words AS wo ON wo.id = cb.word_id  \
         LEFT JOIN languages AS lan on resp.language_id = lan.id \
-        WHERE co.id = ? AND resp.response BETWEEN ? AND ? AND lan.active = "True" \
+        WHERE co.id = ? AND resp.response BETWEEN ? AND ? AND lan.active = "True" AND cb.position = 1 \
         ORDER BY resp.response;')
+
+    select_expected_answers = Query(10, ('SQLite3', 'MySQL'), 'Used for collecting expected answers for provided response_id.', ' \
+        SELECT wo.text \
+        FROM words AS wo \
+        LEFT JOIN combos AS cb ON cb.word_id = wo.id \
+        WHERE cb.call_id = ? AND cb.position > 1;')
 
     select_known_calls = Query(10, ('SQLite3', 'MySQL'), 'Used for collecting pre-recognition calls', '    SELECT\n')
 
@@ -253,4 +259,3 @@ class QueryList:
 
         self.select_known_calls.text = '{0}    WHERE mod.active = "True" AND lan.active = "True" \n\
         GROUP BY cal.id, wo1.text;'.format(self.select_known_calls.text)
-

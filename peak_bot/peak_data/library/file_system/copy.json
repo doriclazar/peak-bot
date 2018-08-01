@@ -3,7 +3,7 @@
         "name": "copy file 1",
       	"code": "CPFI0007",
         "programming_language":"python3",
-        "definition": "copy({0}, {1}, follow_symlinks=True)",
+        "definition": "shutil.copy2({0}, {1}, follow_symlinks=True)",
     	"script_url": "",
 	"description":"",
         "active": "True",
