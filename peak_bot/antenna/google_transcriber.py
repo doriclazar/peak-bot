@@ -18,6 +18,9 @@ class GoogleTranscriber:
             os.remove(audio_path)
         return response.results[0].alternatives
 
+    def insert_expected_words(self, expected_words):
+        pass
+
     def __init__(self, output_control, audio_settings_dict, expected_calls):
         self.output_control = output_control
         for audio_values in audio_settings_dict['audio_values']:

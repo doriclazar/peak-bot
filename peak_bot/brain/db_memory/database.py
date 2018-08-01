@@ -43,7 +43,7 @@ class Database:
                     code = language_data['code'],
                     name = language_data['name'],
                     #active = language_data['active'],
-                    active = True,
+                    active = "True",
                     output_control = self.output_control)
             language.insert()
 
@@ -64,7 +64,7 @@ class Database:
                 definition = command_data['definition'],
                 description = command_data['description'],
                 #active = command_data['active'],
-                active = True,
+                active = "True",
                 output_control = self.output_control)
         command.insert()
         oc.print(oc.COM_OK, (command.name,))
@@ -73,7 +73,7 @@ class Database:
                     cursor = self.cursor,
                     name = external_module_data['name'],
                     #active = external_module_data['active'],
-                    active = True,
+                    active = "True",
                     output_control = self.output_control)
             external_module.insert()
             oc.print(oc.EXM_OK, (external_module.name,))
@@ -93,7 +93,7 @@ class Database:
                     language_code = call_data['language'],
                     response = call_data['response'],
                     #active = call_data['active'],
-                    active = True,
+                    active = "True",
                     output_control = self.output_control)
             call.insert()
             for word_data in call_data['words']:
@@ -101,7 +101,7 @@ class Database:
                         cursor = self.cursor,
                         text = word_data['text'],
                         #active = call.active,
-                        active = True,
+                        active = "True",
                         output_control = self.output_control)
                 word.insert()
                 combo = Combo(self.query_list,
@@ -128,7 +128,7 @@ class Database:
                 code = module_meta['code'],
                 description = module_meta['description'],
                 #active = module_meta['active'],
-                active = True,
+                active = "True",
                 output_control = self.output_control)
         module.insert()
         for command_data in module_dict['module']['commands']:

@@ -1,7 +1,7 @@
 from sys import byteorder
 from array import array
 from struct import pack
-from ctypes import CFUNCTYPE, cdll, c_char_p, c_int
+from ctypes import cdll
 
 import pyaudio
 import wave
@@ -17,12 +17,7 @@ class Listener:
         'float32':pyaudio.paFloat32
         }
 
-    def py_error_handler(self, file_path, line, definition, err, fmt):
-        pass
-
     def set_values(self, audio_settings_dict):
-        handler_def = CFUNCTYPE(None, c_char_p, c_int, c_char_p, c_int, c_char_p)
-        self.c_error_handler = handler_def(self.py_error_handler)
         self.asound = cdll.LoadLibrary('libasound.so')
         for audio_values in audio_settings_dict['audio_values']:
             if audio_values['active'] == 'True':
@@ -33,9 +28,14 @@ class Listener:
                 self.max_volume = int(audio_values['max_volume'])
 
     def listen(self):
-        self.asound.snd_lib_error_set_handler(self.c_error_handler)
+        self.asound.snd_lib_error_set_handler(self.output_control.c_error_handler)
         py_audio = pyaudio.PyAudio()
-        py_stream = py_audio.open(format=self.format, channels=1, rate=self.sample_rate, input=True, output=True, frames_per_buffer=self.chunk_size)
+        py_stream = py_audio.open(format=self.format, 
+                channels=1, 
+                rate=self.sample_rate, 
+                input=True, 
+                output=True, 
+                frames_per_buffer=self.chunk_size)
         silent_time = 0
         voice_started = False
         audio_data = array('h')
