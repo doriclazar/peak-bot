@@ -223,7 +223,6 @@ class PeakBot:
             self.output_control.print(self.output_control.AFT_COM_WORDS, (response,))
             self.command_finder.find_commands(response)
             args = self.command_finder.command_args
-            print('original arg: {0}:'.format(args))
             args = args + self.get_additional_args(len(args))
 
             self.executor.execute_command(self.command_finder.command_id, args)

@@ -43,11 +43,21 @@ class Executor:
         if command is not None:
             programming_language = command[1]
             definition = command[2]
+
             #try:
             if True:
                 if programming_language == 'python3':
                     self.import_external_modules(command_id)
-                    exec(definition.format(*command_args))
+
+                    if len(command[3])>0:
+
+                        exec('from .{0} import {1}'.format(command[3], command[4]))
+                        exec('self.instance = {0}()'.format(command[4]))
+                        #exec('self.instance = {0}({1})'.format(command[4], *command_args))
+
+                    else:
+                        exec(definition.format(*command_args))
+
                     '''
                     for returned_arg in self.returned_args:
                         success_response = (response_dict[100] % (command_args, returned_arg))

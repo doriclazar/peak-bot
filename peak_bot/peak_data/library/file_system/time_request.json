@@ -12,7 +12,8 @@
         "name": "Time and Date"
       }
     ],
-    "script_url": "none.com",
+    "script_path": "",
+    "class_name": "",
     "note": "Imported from peak_30 2018-07-31 01:58:56.003451+00:00.",
     "active": "True",
     "name": "time request",
