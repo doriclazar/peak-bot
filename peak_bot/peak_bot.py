@@ -2,14 +2,16 @@
 import os
 import sys
 
-from .brain.db_memory.database import Database
-from .brain.fs_memory.file_handler import FileHandler
-from .brain.processing.command_finder import CommandFinder
-from .brain.processing.executor import Executor
-from .ears.listener import Listener
-from .ears.input_control import InputControl
-from .antenna.google_transcriber import GoogleTranscriber
-from .antenna.bing_transcriber import BingTranscriber
+from tongue.output_control import OutputControl
+from brain.db_memory.database import Database
+from brain.fs_memory.file_handler import FileHandler
+from brain.processing.command_finder import CommandFinder
+from brain.processing.executor import Executor
+from ears.listener import Listener
+from ears.input_control import InputControl
+from antenna.google_transcriber import GoogleTranscriber
+from antenna.bing_transcriber import BingTranscriber
+from antenna.peak_connection import PeakConnection
 
 class PeakBot:
     module_dicts = []
@@ -39,6 +41,7 @@ class PeakBot:
                 oc.print(oc.DB_PATH_SET)
         except Exception as e:
             oc.print(oc.DB_PATH_NOT_SET, (str(e),))
+            sys.exit
 
     def set_modules_and_commands(self, library_path):
         '''
@@ -122,17 +125,17 @@ class PeakBot:
             self.transcriber = transcriber_type(self.output_control, self.audio_settings_dict, expected_calls)
             self.output_control.print(self.output_control.INIT, ('Transcriber',))
         except Exception as e:
-            self.output_control.print(self.output_control.TRANSC_NOT_INIT, ('Transcriber', str(e)))
+            self.output_control.print(self.output_control.NOT_INIT, ('Transcriber', str(e)))
             sys.exit()
 
 
-    def init_executor(self):
+    def init_executor(self, modules_path):
         '''
         Initiates a new executor.
         '''
         self.output_control.print(self.output_control.INIT_ATT, ('executor',))
         try:
-            self.executor = Executor(self.output_control, self.database)
+            self.executor = Executor(self.output_control, self.database, modules_path)
             self.output_control.print(self.output_control.INIT, ('Executor',))
         except Exception as e:
             self.output_control.print(self.output_control.NOT_INIT, ('Executor', str(e),))
@@ -182,6 +185,10 @@ class PeakBot:
             expected_answers = self.database.cursor.execute(self.database.query_list.select_expected_answers.text, (response_id,)).fetchall()
             #self.transcriber.expected_calls.append(expected_calls)
             response_index += 1
+
+            if len(expected_answers)==0:
+                expected_answers=''
+
             self.output_control.print(self.output_control.RESPONSE, (response_text, str(expected_answers)))
 
 
@@ -191,7 +198,8 @@ class PeakBot:
 
             alternatives = self.transcriber.transcribe(self.listener.file_path)
             response = self.input_control.format_input(alternatives[0].transcript)
-            additional_args = additional_args + (response[0],)
+            for word in response:
+                additional_args = additional_args + (word,)
         return additional_args
 
     def run_peak_bot(self):
@@ -225,19 +233,21 @@ class PeakBot:
             args = args + self.get_additional_args(len(args))
 
             self.executor.execute_command(self.command_finder.command_id, args)
+            print('executed: {0} with args'.format(args))
             if os.path.exists(self.listener.file_path):
                 os.remove(self.listener.file_path)
             self.database.connection.commit()
             self.exit = True
 
-    def __init__(self, fundamental_directories, output_control):
-        self.output_control = output_control
-        oc = output_control
-        self.file_handler = FileHandler(output_control)
-        self.settings_dict = self.file_handler.load_from_path(fundamental_directories[0])
+    def __init__(self, fundamental_directories, verbosity):
+        self.output_control = OutputControl(range(0, 8), str(verbosity))
+        self.file_handler = FileHandler(self.output_control)
         self.audio_settings_dict = self.file_handler.load_from_path(fundamental_directories[1])  
+        self.output_control.set_values(self.audio_settings_dict)
+        self.settings_dict = self.file_handler.load_from_path(fundamental_directories[0])
+        self.output_control.print(self.output_control.WELCOME_MSG) 
         self.languages_dict = self.file_handler.load_from_path(fundamental_directories[2])
-        self.input_control = InputControl(output_control)
+        self.input_control = InputControl(self.output_control)
         self.set_database_path()
         self.set_modules_and_commands(fundamental_directories[3])
 
@@ -245,12 +255,9 @@ class PeakBot:
         self.init_listener(fundamental_directories[4])
         self.init_command_finder()
         self.init_transcriber(self.command_finder.expected_calls)
-        self.init_executor()
-
+        self.init_executor(fundamental_directories[5])
         self.init_connection()
-        
         #self.update()
-
         self.run_peak_bot()
 
         self.database.connection.close()

@@ -9,8 +9,6 @@ from google.cloud import texttospeech
 class OutputControl:
     #STRING_NAME = ('Some text', output GROUP, VERBOSITY required to print, success SIGN)
     signs = {}
-#    txt_to_speech = True
-    txt_to_speech = False
     '''
     output_groups:
     main/general = 0
@@ -126,8 +124,9 @@ class OutputControl:
     Executor class
     output_group: 6
     '''
+    ANSWER = ('{0}', 6, 0, 1)
     MOD_ATT_IMPORT = ('Attempting to import module "{0}".', 6, 1, 1)
-    MOD_IMPORT = ('Module "{0}" imported.', 6, 3, 1)
+    MOD_IMPORT = ('Module "{0}" imported.', 6, 1, 1)
     MOD_NOT_IMPORT = ('Unable to import the module: "{0}".\nException: {1}.', 6, 1, 5)
     SUC_RESP = ('{0}', 5, 0, 0)
     '''
@@ -169,17 +168,12 @@ class OutputControl:
         if int(output[2]) <= int(self.verbosity_level) and output[1] in self.output_groups:
             text = output[0].format(*args)
             if self.txt_to_speech:
-                client = texttospeech.TextToSpeechClient()
                 input_text = texttospeech.types.SynthesisInput(text='{0}'.format(text))
-                voice = texttospeech.types.VoiceSelectionParams(language_code='en-US', ssml_gender=texttospeech.enums.SsmlVoiceGender.FEMALE)
-                audio_config = texttospeech.types.AudioConfig(audio_encoding=texttospeech.enums.AudioEncoding.LINEAR16)
-                response = client.synthesize_speech(input_text, voice, audio_config)
+                response = self.client.synthesize_speech(input_text, self.voice, self.audio_config)
                 response.audio_content
                 audio_path = 'output.wav'
                 with open(audio_path, 'wb') as out:
                     out.write(response.audio_content)
-
-                chunk = 1024
                 audio_response = wave.open(audio_path,"rb")
                 self.asound.snd_lib_error_set_handler(self.c_error_handler)
                 py_audio = pyaudio.PyAudio()
@@ -187,11 +181,12 @@ class OutputControl:
                                 channels = audio_response.getnchannels(),
                                 rate = audio_response.getframerate(),
                                 output = True)
-                audio_data = audio_response.readframes(chunk)
+
+                audio_data = audio_response.readframes(self.chunk_size)
 
                 while audio_data:
                     py_stream.write(audio_data)
-                    audio_data = audio_response.readframes(chunk)
+                    audio_data = audio_response.readframes(self.chunk_size)
 
                 py_stream.stop_stream()
                 py_stream.close()
@@ -208,11 +203,27 @@ class OutputControl:
                 # Comment out:
                 print('{0}{1}'.format(self.signs[output[3]], text))
 
+    def set_values(self, audio_settings_dict):
+        self.txt_to_speech = True
+        self.asound = cdll.LoadLibrary('libasound.so')
+        handler_def = CFUNCTYPE(None, c_char_p, c_int, c_char_p, c_int, c_char_p)
+        self.c_error_handler = handler_def(self.py_error_handler)
+        self.client = texttospeech.TextToSpeechClient()
+        self.audio_config = texttospeech.types.AudioConfig(audio_encoding=texttospeech.enums.AudioEncoding.LINEAR16)
+        for audio_values in audio_settings_dict['audio_values']:
+            if audio_values['active'] == 'True':
+                self.voice = texttospeech.types.VoiceSelectionParams(
+                        language_code=audio_values['language'], 
+                        ssml_gender=texttospeech.enums.SsmlVoiceGender.FEMALE)
+                self.chunk_size = int(audio_values['chunk_size'])
+                '''
+                self.format = self.portaudio_formats[audio_values['format']]
+                self.threshold = int(audio_values['threshold'])
+                self.sample_rate = int(audio_values['rate'])
+                self.max_volume = int(audio_values['max_volume'])
+                '''
 
     def __init__(self, output_groups, verbosity_level):
         self.output_groups = output_groups
         self.verbosity_level = verbosity_level
-        self.asound = cdll.LoadLibrary('libasound.so')
-        handler_def = CFUNCTYPE(None, c_char_p, c_int, c_char_p, c_int, c_char_p)
-        self.c_error_handler = handler_def(self.py_error_handler)
-    
+        self.txt_to_speech = False

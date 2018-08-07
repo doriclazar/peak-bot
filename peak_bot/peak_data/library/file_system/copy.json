@@ -3,8 +3,9 @@
         "name": "copy file 1",
       	"code": "CPFI0007",
         "programming_language":"python3",
-        "definition": "shutil.copy2({0}, {1}, follow_symlinks=True)",
-    	"script_url": "",
+        "definition": "copy2('{0}', '{1}', follow_symlinks=True)",
+    	"script_path": "",
+ 	"class_name": "",
 	"description":"",
         "active": "True",
         "note": "Copy the specified file from argument1-{0}(source) to argument2-{1}(destination). ",
@@ -13,7 +14,7 @@
 	  {
 	    "name":"shutil",
 	    "active":"True"
-	  }	
+	  }
 	],
         "calls": [
           {
@@ -72,37 +73,6 @@
                 "position":3 
               }            
 	    ]
-          },
-	  {
-            "language": "en-US",
-	    "response": "3",
-            "active": "True",
-            "words": [
-              {
-                "text": "copy",
-                "variable_length": "0",
-                "optional": "False",
-                "position":1
-	      },
-	      {
-		"text": "var",
-		"variable_length": "1",
-		"optional": "False",
-		"position":2 
-	      },
-              {
-                "text": "var",
-                "variable_length": "1",
-                "optional": "False",
-                "position":3 
-              },
-              {
-                "text": "var",
-                "variable_length": "1",
-                "optional": "False",
-                "position":3 
-              }
-            ]
           },
 	  {
             "language": "en-US",

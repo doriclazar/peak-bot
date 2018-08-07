@@ -1,7 +1,7 @@
 ﻿{
   "audio_values": [
     {
-      "language":"en-US",
+      "language":"en-GB",
       "format": "int16",
       "rate": "16000",
       "threshold": "3500",

@@ -33,7 +33,8 @@ class QueryList:
         code VARCHAR(16), \
         programming_language VARCHAR(32), \
         definition VARCHAR(8192), \
-        script_url VARCHAR(128), \
+        script_path VARCHAR(128), \
+        class_name VARCHAR(32), \
         description VARCHAR(1024), \
         active BOOLEAN DEFAULT True, \
         FOREIGN KEY (module_id) REFERENCES modules(id) \
@@ -100,9 +101,9 @@ class QueryList:
 
     insert_command = Query(1, ('SQLite3', 'MySQL'), 'Inserts a single command.', \
         'INSERT INTO commands \
-        (module_id, name, code, programming_language, definition, script_url, description,  active) \
+        (module_id, name, code, programming_language, definition, script_path, class_name, description, active) \
         VALUES \
-        (?, ?, ?, ?, ?, ?, ?, ?);')
+        (?, ?, ?, ?, ?, ?, ?, ?, ?);')
 
     insert_external_module = Query(3, ('SQLite3', 'MySQL'), 'Inserts a single external module.', \
         'INSERT INTO external_modules \
@@ -187,7 +188,7 @@ class QueryList:
         AND com.active == "True";')
 
     select_command_by_id = Query(10, ('SQLite3', 'MySQL'), 'Used for finding a single command with provided id', ' \
-        SELECT co.name AS name, co.programming_language AS language, co.definition AS definition \
+        SELECT co.name AS name, co.programming_language AS language, co.definition AS definition, co.script_path, co.class_name \
         FROM commands AS co \
         WHERE co.id = ?;')
 
