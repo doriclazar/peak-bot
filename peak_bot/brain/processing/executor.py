@@ -45,6 +45,10 @@ class Executor:
         if command is not None:
             programming_language = command[1]
             definition = command[2]
+            code = command[3]
+            script_location = command[4]
+            if script_location is not None:
+                import script_location
             #try:
             if True:
                 if programming_language == 'python3':

@@ -174,6 +174,7 @@ class PeakBot:
 
     def get_additional_args(self, response_index):
         additional_args = ()
+
         noninitial_responses = self.database.cursor.execute(self.database.query_list.select_responses_by_command_id.text, (str(self.command_finder.command_id), 26, 50)).fetchall()
         if not noninitial_responses:
             noninitial_responses = ''
@@ -184,8 +185,10 @@ class PeakBot:
             expected_answers = self.database.cursor.execute(self.database.query_list.select_expected_answers.text, (response_id,)).fetchall()
             #self.transcriber.expected_calls.append(expected_calls)
             response_index += 1
+
             if len(expected_answers)==0:
                 expected_answers=''
+
             self.output_control.print(self.output_control.RESPONSE, (response_text, str(expected_answers)))
 
 
@@ -226,6 +229,7 @@ class PeakBot:
             self.output_control.print(self.output_control.AFT_COM_WORDS, (response,))
             self.command_finder.find_commands(response)
             args = self.command_finder.command_args
+            print('original arg: {0}:'.format(args))
             args = args + self.get_additional_args(len(args))
 
             self.executor.execute_command(self.command_finder.command_id, args)
@@ -253,9 +257,7 @@ class PeakBot:
         self.init_transcriber(self.command_finder.expected_calls)
         self.init_executor(fundamental_directories[5])
         self.init_connection()
-        
         #self.update()
-
         self.run_peak_bot()
 
         self.database.connection.close()

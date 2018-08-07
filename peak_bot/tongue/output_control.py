@@ -181,6 +181,7 @@ class OutputControl:
                                 channels = audio_response.getnchannels(),
                                 rate = audio_response.getframerate(),
                                 output = True)
+
                 audio_data = audio_response.readframes(self.chunk_size)
 
                 while audio_data:
