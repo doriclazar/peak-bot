@@ -2,16 +2,16 @@
 import os
 import sys
 
-from tongue.output_control import OutputControl
-from brain.db_memory.database import Database
-from brain.fs_memory.file_handler import FileHandler
-from brain.processing.command_finder import CommandFinder
-from brain.processing.executor import Executor
-from ears.listener import Listener
-from ears.input_control import InputControl
-from antenna.google_transcriber import GoogleTranscriber
-from antenna.bing_transcriber import BingTranscriber
-from antenna.peak_connection import PeakConnection
+from .tongue.output_control import OutputControl
+from .brain.db_memory.database import Database
+from .brain.fs_memory.file_handler import FileHandler
+from .brain.processing.command_finder import CommandFinder
+from .brain.processing.executor import Executor
+from .ears.listener import Listener
+from .ears.input_control import InputControl
+from .antenna.google_transcriber import GoogleTranscriber
+from .antenna.bing_transcriber import BingTranscriber
+from .antenna.peak_connection import PeakConnection
 
 class PeakBot:
     module_dicts = []
