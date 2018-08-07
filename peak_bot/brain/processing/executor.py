@@ -4,9 +4,10 @@ import subprocess
 class Executor:
     returned_args=()
 
-    def __init__(self, output_control, database):
-        self.database = database
+    def __init__(self, output_control, database, modules_path):
         self.output_control = output_control
+        self.database = database
+        self.modules_path = modules_path
 
     def install_external_module(self, external_module):
         try:
@@ -20,12 +21,13 @@ class Executor:
 
 
     def import_external_modules(self, command_id):
+        self.external_modules_dict = {}
         external_modules = (self.database.cursor.execute(self.database.query_list.select_external_modules_by_command_id.text, (str(command_id),))).fetchall()
         oc = self.output_control
         for external_module in external_modules:
             oc.print(oc.MOD_ATT_IMPORT, external_module)
             try:
-                exec('import {0}'.format(external_module[0]))
+                exec('from {0} import *'.format(external_module[0]), globals())
                 oc.print(oc.MOD_IMPORT, external_module)
             except ImportError as e:
                 oc.print(oc.MOD_NOT_IMPORT, (external_module, str(e)))
@@ -43,17 +45,16 @@ class Executor:
         if command is not None:
             programming_language = command[1]
             definition = command[2]
-
             #try:
             if True:
                 if programming_language == 'python3':
                     self.import_external_modules(command_id)
 
                     if len(command[3])>0:
-
-                        exec('from .{0} import {1}'.format(command[3], command[4]))
+                        exec('from {0}.{1} import {2}'.format(self.modules_path, command[3], command[4]))
                         exec('self.instance = {0}()'.format(command[4]))
-                        #exec('self.instance = {0}({1})'.format(command[4], *command_args))
+                        exec('self.answer = self.instance.{}({})'.format(definition, command_args))
+                        self.output_control.print(self.output_control.ANSWER, (self.answer,))
 
                     else:
                         exec(definition.format(*command_args))
