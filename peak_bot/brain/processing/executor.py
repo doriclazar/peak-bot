@@ -34,8 +34,9 @@ class Executor:
                 if internet_mode:
                     install_external_module(external_module)
 
+
+
     def execute_command(self, command_id, command_args):
-        response_dict={}
         oc = self.output_control
         definition = 'No command'
         external_modules = ()
@@ -45,10 +46,6 @@ class Executor:
         if command is not None:
             programming_language = command[1]
             definition = command[2]
-            code = command[3]
-            script_location = command[4]
-            if script_location is not None:
-                import script_location
             #try:
             if True:
                 if programming_language == 'python3':
@@ -60,12 +57,15 @@ class Executor:
                         exec('self.answer = self.instance.{}({})'.format(definition, command_args))
                         self.output_control.print(self.output_control.ANSWER, (self.answer,))
 
+                        # return (string message/result, bool is_finished)
+                        #self.output_control.print(self.output_control.ANSWER, (self.answer[0],))
+
                     else:
                         exec(definition.format(*command_args))
 
                     '''
-                    for returned_arg in self.returned_args:
-                        success_response = (response_dict[100] % (command_args, returned_arg))
+                    if self.answer[1]:
+                        success_response = self.database.cursor.execute(self.database.query_list.select_responses_by_command_id.text, (str(command_id), 99, 100)).fetchone()
                         oc.print(oc.SUC_RESP, (success_response,))
                     '''
                 elif programming_language == 'sql':

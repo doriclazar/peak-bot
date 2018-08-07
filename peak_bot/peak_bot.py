@@ -17,7 +17,7 @@ class PeakBot:
     module_dicts = []
     command_list = []
     database_path = ""
-    def set_database_path(self):
+    def set_database_path(self, settings_path):
         '''
         Function for extracting a database path.
         Assumes only one database is active.
@@ -29,7 +29,8 @@ class PeakBot:
                 for database_data in self.settings_dict['databases']:
                     if database_data['database_active'] == 'True':
                         if database_data['database_engine'] == 'sqlite3':
-                            self.database_path = ('{0}{1}'.format(database_data['database_dir'], database_data['database_filename']))
+                            #self.database_path = ('{0}{1}'.format(database_data['database_dir'], database_data['database_filename']))
+                            self.database_path = ('{0}{1}'.format(settings_path, database_data['database_filename']))
                             oc.print(oc.USING_DB, (database_data['database_filename'],))
                             break
                         elif database_data['database_engine'] in ('MS SQL Server', 'MySql', 'MySql/MariaDB', 'MongoDB'):
@@ -229,11 +230,9 @@ class PeakBot:
             self.output_control.print(self.output_control.AFT_COM_WORDS, (response,))
             self.command_finder.find_commands(response)
             args = self.command_finder.command_args
-            print('original arg: {0}:'.format(args))
             args = args + self.get_additional_args(len(args))
 
             self.executor.execute_command(self.command_finder.command_id, args)
-            print('executed: {0} with args'.format(args))
             if os.path.exists(self.listener.file_path):
                 os.remove(self.listener.file_path)
             self.database.connection.commit()
@@ -248,7 +247,7 @@ class PeakBot:
         self.output_control.print(self.output_control.WELCOME_MSG) 
         self.languages_dict = self.file_handler.load_from_path(fundamental_directories[2])
         self.input_control = InputControl(self.output_control)
-        self.set_database_path()
+        self.set_database_path(fundamental_directories[0])
         self.set_modules_and_commands(fundamental_directories[3])
 
         self.init_database()
