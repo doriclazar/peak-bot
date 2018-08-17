@@ -204,7 +204,6 @@ class OutputControl:
                 print('{0}{1}'.format(self.signs[output[3]], text))
 
     def set_values(self, audio_settings_dict):
-        self.txt_to_speech = True
         self.asound = cdll.LoadLibrary('libasound.so')
         handler_def = CFUNCTYPE(None, c_char_p, c_int, c_char_p, c_int, c_char_p)
         self.c_error_handler = handler_def(self.py_error_handler)
@@ -216,14 +215,12 @@ class OutputControl:
                         language_code=audio_values['language'], 
                         ssml_gender=texttospeech.enums.SsmlVoiceGender.FEMALE)
                 self.chunk_size = int(audio_values['chunk_size'])
-                '''
-                self.format = self.portaudio_formats[audio_values['format']]
-                self.threshold = int(audio_values['threshold'])
-                self.sample_rate = int(audio_values['rate'])
-                self.max_volume = int(audio_values['max_volume'])
-                '''
 
     def __init__(self, output_groups, verbosity_level):
         self.output_groups = output_groups
         self.verbosity_level = verbosity_level
-        self.txt_to_speech = False
+        if verbosity_level > 0:
+            self.txt_to_speech = False
+        else
+            self.txt_to_speech = True
+            

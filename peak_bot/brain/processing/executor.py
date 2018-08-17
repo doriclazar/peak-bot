@@ -55,19 +55,18 @@ class Executor:
                         exec('from {0}.{1} import {2}'.format(self.modules_path, command[3], command[4]))
                         exec('self.instance = {0}()'.format(command[4]))
                         exec('self.answer = self.instance.{}({})'.format(definition, command_args))
-                        self.output_control.print(self.output_control.ANSWER, (self.answer,))
-
-                        # return (string message/result, bool is_finished)
-                        #self.output_control.print(self.output_control.ANSWER, (self.answer[0],))
+                        answer_text = self.answer[0]
+                        self.output_control.print(self.output_control.ANSWER, (answer_text,))
 
                     else:
                         exec(definition.format(*command_args))
 
-                    '''
                     if self.answer[1]:
-                        success_response = self.database.cursor.execute(self.database.query_list.select_responses_by_command_id.text, (str(command_id), 99, 100)).fetchone()
+                        success_response = self.database.cursor.execute(
+                                self.database.query_list.select_responses_by_command_id.text, 
+                                (str(command_id), self.answer[1], self.answer[1])).fetchone()
                         oc.print(oc.SUC_RESP, (success_response,))
-                    '''
+
                 elif programming_language == 'sql':
                     pass
 

@@ -184,7 +184,7 @@ class PeakBot:
             response_number = noninitial_responses[response_index][1]
             response_text = noninitial_responses[response_index][2]
             expected_answers = self.database.cursor.execute(self.database.query_list.select_expected_answers.text, (response_id,)).fetchall()
-            #self.transcriber.expected_calls.append(expected_calls)
+            #self.transcriber.expected_calls.append(expected_answers)
             response_index += 1
 
             if len(expected_answers)==0:
@@ -247,14 +247,14 @@ class PeakBot:
         self.output_control.print(self.output_control.WELCOME_MSG) 
         self.languages_dict = self.file_handler.load_from_path(fundamental_directories[2])
         self.input_control = InputControl(self.output_control)
-        self.set_database_path(fundamental_directories[0])
+        self.set_database_path(fundamental_directories[5])
         self.set_modules_and_commands(fundamental_directories[3])
 
         self.init_database()
         self.init_listener(fundamental_directories[4])
         self.init_command_finder()
         self.init_transcriber(self.command_finder.expected_calls)
-        self.init_executor(fundamental_directories[5])
+        self.init_executor(fundamental_directories[6])
         self.init_connection()
         #self.update()
         self.run_peak_bot()
