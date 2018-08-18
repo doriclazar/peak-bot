@@ -219,8 +219,12 @@ class OutputControl:
     def __init__(self, output_groups, verbosity_level):
         self.output_groups = output_groups
         self.verbosity_level = verbosity_level
-        if verbosity_level > 0:
-            self.txt_to_speech = False
-        else
+        try:
+            if int(verbosity_level) > 0:
+                self.txt_to_speech = False
+        
+            else:
+                self.txt_to_speech = True
+        except ValueError:
+            verbosity_level = 0
             self.txt_to_speech = True
-            

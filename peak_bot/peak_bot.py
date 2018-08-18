@@ -29,7 +29,6 @@ class PeakBot:
                 for database_data in self.settings_dict['databases']:
                     if database_data['database_active'] == 'True':
                         if database_data['database_engine'] == 'sqlite3':
-                            #self.database_path = ('{0}{1}'.format(database_data['database_dir'], database_data['database_filename']))
                             self.database_path = ('{0}{1}'.format(settings_path, database_data['database_filename']))
                             oc.print(oc.USING_DB, (database_data['database_filename'],))
                             break

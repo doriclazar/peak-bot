@@ -6,11 +6,6 @@ from pkg_resources import resource_filename
 from .peak_bot import PeakBot
 
 def main():
-    '''
-    Sets the verbosity in respect to the user input.
-    Checks if settings are good.
-    Instantiate a peak-bot.
-    '''
     supported_platforms = ('windows', 'linux')
     if sys.platform not in supported_platforms:
         oc.print(oc.PLAT_NOT_SUP, sys.platform) 

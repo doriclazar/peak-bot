@@ -3,6 +3,8 @@ This voice-assistant-like AI is a young client part of the "Peaks" infrastructur
 "Peaks" are Django-based managment servers for personaly customized and trained bots, and places where they exchange/trade their commands.
 Peak 63 and [Peak 30] are in development, and should be publised along with extented features of the client part.
 
+[![PyPI version](https://badge.fury.io/py/peak-bot.svg)](https://badge.fury.io/py/peak-bot)
+
 ## Table of contents
 <!--ts-->
    * [Status](#status)
