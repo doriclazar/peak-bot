@@ -8,6 +8,25 @@ class Query:
         self.text = text
 
 class QueryList:
+    create_event = Query(1, ('SQLite3', 'MySQL'), '', \
+        'CREATE TABLE IF NOT EXISTS event ( \
+        id INTEGER PRIMARY KEY AUTOINCREMENT, \
+        name VARCHAR(32), \
+        code VARCHAR(16), \
+        description VARCHAR(1024), \
+        creation_time TEXT, \
+        read_time TEXT, \
+        active BOOLEAN \
+        );')
+
+    create_timespan = Query(1, ('SQLite3', 'MySQL'), '', \
+        'CREATE TABLE IF NOT EXISTS timespan ( \
+        id INTEGER PRIMARY KEY AUTOINCREMENT, \
+        name VARCHAR(32), \
+        code VARCHAR(16), \
+        active BOOLEAN \
+        );')
+
     create_languages = Query(1, ('SQLite3', 'MySQL'), 'This table holds the languages of the command calls.', \
         'CREATE TABLE IF NOT EXISTS languages ( \
         id INTEGER PRIMARY KEY AUTOINCREMENT, \
@@ -19,6 +38,16 @@ class QueryList:
     create_modules = Query(1, ('SQLite3', 'MySQL'), 'Creates the "modules", a table which holds the names of command chunks.', \
         'CREATE TABLE IF NOT EXISTS modules ( \
         id INTEGER PRIMARY KEY AUTOINCREMENT, \
+        name VARCHAR(32), \
+        code VARCHAR(16), \
+        description VARCHAR(1024), \
+        active BOOLEAN \
+        );')
+
+    create_classes = Query(1, ('SQLite3', 'MySQL'), 'Creates the "classes".', \
+        'CREATE TABLE IF NOT EXISTS modules ( \
+        id INTEGER PRIMARY KEY AUTOINCREMENT, \
+        module_id INTEGER NOT NULL, \
         name VARCHAR(32), \
         code VARCHAR(16), \
         description VARCHAR(1024), \
