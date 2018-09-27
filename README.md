@@ -11,7 +11,7 @@ Peak 63 and [Peak 30] are in development, and should be publised along with exte
    * [Getting started](#getting-started)
    * [Prequisites](#prequisites)
       * [Arch Linux](#arch-linux)
-      * [Ubuntu, Debian, Linux Mint](ubuntu-debian-linux-mint)
+      * [Ubuntu, Debian, Linux Mint](ubuntu-debian-linux.mint)
       * [Fedora, CentOS](#fedora-centos)
       * [Windows](#windows)
    * [Installation](#installation)
@@ -19,7 +19,7 @@ Peak 63 and [Peak 30] are in development, and should be publised along with exte
 <!--te-->
 
 ## Status
-Alpha release is now on PyPI.
+Beta release is now on PyPI.
 Master branch runs well on Linux and Windows,
 but still lacks large amount of features to be competitive with commercial AIs.
 To test and/or contribute in the meantime, please follow the rest of this file...
