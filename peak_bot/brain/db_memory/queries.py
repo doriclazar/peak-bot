@@ -19,12 +19,17 @@ class QueryList:
         active BOOLEAN \
         );')
 
-    create_timespan = Query(1, ('SQLite3', 'MySQL'), '', \
-        'CREATE TABLE IF NOT EXISTS timespan ( \
+    create_action = Query(1, ('SQLite3', 'MySQL'), '', \
+        'CREATE TABLE IF NOT EXISTS action ( \
         id INTEGER PRIMARY KEY AUTOINCREMENT, \
+        event_id INTEGER NOT NULL, \
         name VARCHAR(32), \
         code VARCHAR(16), \
-        active BOOLEAN \
+        start_time TEXT, \
+        end_time TEXT, \
+        creation_time TEXT, \
+        active BOOLEAN, \
+        FOREIGN KEY (event_id) REFERENCES event(id) \
         );')
 
     create_languages = Query(1, ('SQLite3', 'MySQL'), 'This table holds the languages of the command calls.', \
@@ -51,7 +56,8 @@ class QueryList:
         name VARCHAR(32), \
         code VARCHAR(16), \
         description VARCHAR(1024), \
-        active BOOLEAN \
+        active BOOLEAN, \
+        FOREIGN KEY (module_id) REFERENCES modules(id) \
         );')
 
     create_commands = Query(1, ('SQLite3', 'MySQL'), 'Creates the "commands" table. Multiple commands are binded by one module.', \
