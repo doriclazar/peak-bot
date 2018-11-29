@@ -15,6 +15,7 @@ from ears.input_control import InputControl
 from antenna.google_transcriber import GoogleTranscriber
 from antenna.bing_transcriber import BingTranscriber
 from antenna.peak_connection import PeakConnection
+
 '''
 PyPI deploy
 from .tongue.output_control import OutputControl
@@ -190,7 +191,6 @@ class PeakBot:
 
     def get_additional_args(self, response_index):
         additional_args = ()
-
         noninitial_responses = self.database.cursor.execute(self.database.query_list.select_responses_by_command_id.text, (str(self.command_finder.command_id), 26, 50)).fetchall()
         if not noninitial_responses:
             noninitial_responses = ''

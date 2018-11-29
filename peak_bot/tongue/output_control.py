@@ -196,6 +196,7 @@ class OutputControl:
                 if os.path.exists(audio_path):
                     os.remove(audio_path)
                 
+            #print('{0}{1}'.format(self.signs[output[3]], text))
             else:
                 # To remove tab-signs from command output: 
                 # Uncomment:
