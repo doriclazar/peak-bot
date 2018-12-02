@@ -207,7 +207,6 @@ class PeakBot:
 
             self.output_control.print(self.output_control.RESPONSE, (response_text, str(expected_answers)))
 
-
             self.listener.record()
             #if len(expected_answers) > 0:
                 #send to transcriber as expected words!!!
@@ -218,27 +217,31 @@ class PeakBot:
                 additional_args = additional_args + (word,)
         return additional_args
 
-    def run_peak_bot(self):
+    def run_peak_bot(self, verbosity):
         self.exit = False
         while not self.exit:
-            self.listener.record()
-            alternatives = self.transcriber.transcribe(self.listener.file_path)
             transcript = ''
+            if verbosity < 4:
+                transcript = input(':')
 
-            '''
-            Higher confidence:
-            confidence = 0.3
-            for alternative in alternatives:
-                if alternative.confidence > confidence:
-                    transcript = alternative.transcript
-                    confidence = alternative.confidence
+            else:
+                self.listener.record()
+                alternatives = self.transcriber.transcribe(self.listener.file_path)
 
-            By index:
-            '''
-            for alternative in alternatives:
-                if alternative.confidence>0.9:
-                    transcript = alternative.transcript
-                    break
+                '''
+                Higher confidence:
+                confidence = 0.3
+                for alternative in alternatives:
+                    if alternative.confidence > confidence:
+                        transcript = alternative.transcript
+                        confidence = alternative.confidence
+
+                By index:
+                '''
+                for alternative in alternatives:
+                    if alternative.confidence>0.7:
+                        transcript = alternative.transcript
+                        break
 
             self.output_control.print(self.output_control.BFR_COM_WORDS, (transcript,))
             response = self.input_control.format_input(transcript)
@@ -272,7 +275,7 @@ class PeakBot:
         self.init_executor(fundamental_directories[6])
         self.init_connection()
         #self.update()
-        self.run_peak_bot()
+        self.run_peak_bot(int(verbosity))
 
         self.database.connection.close()
         self.output_control.print(self.output_control.DB_CON_CLOSED)

@@ -1,6 +1,9 @@
 import requests
 import json
 
+'''
+Use to connect to a single Peak server.
+'''
 class PeakConnection():
     def open_session(self):
         session = requests.Session()

@@ -3,6 +3,14 @@ import os
 import sys
 
 '''
+Display options: 
+    Qt      - peak_ui: "https://github.com/doriclazar/peak_ui"
+    Tkinter - in queue.
+    Cli     - default, this.
+'''
+
+
+'''
 Clone
 '''
 from peak_bot import PeakBot

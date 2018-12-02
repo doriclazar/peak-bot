@@ -221,7 +221,7 @@ class OutputControl:
         self.output_groups = output_groups
         self.verbosity_level = verbosity_level
         try:
-            if int(verbosity_level) > 0:
+            if int(verbosity_level) < 4:
                 self.txt_to_speech = False
         
             else:
