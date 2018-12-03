@@ -1,10 +1,7 @@
 import os
-import pyaudio
-import wave
+
 from struct import pack
 from ctypes import CFUNCTYPE, cdll, c_char_p, c_int
-
-from google.cloud import texttospeech
 
 class OutputControl:
     #STRING_NAME = ('Some text', output GROUP, VERBOSITY required to print, success SIGN)
@@ -41,6 +38,7 @@ class OutputControl:
     INACTIVE_DB = ('Database {0} is not active. Skipping...', 1, 3, 0)
     DIR_WITH_COMS = ('{0} directory contains commands', 1, 3, 1)
     COM_LST = ('Command list: {0}', 1, 5, 0)
+    COM_INP = ('Insert a command:', 1, 0, 0)
     SKIP_DIRS = ('Skip directories: {0}', 1, 4, 0)
     NO_JSON_FILE = ('{0} does not have a coresponding .json file in "/modules"', 1, 3, 4)
     DB_PATH_SET_ATT = ('Attempting to set the path for the database...', 1, 3, 4)
@@ -165,9 +163,14 @@ class OutputControl:
 	Prepares "text" variable to be printed.
 	Checks if it shoud print or speak the response.
         '''
-        if int(output[2]) <= int(self.verbosity_level) and output[1] in self.output_groups:
+        if int(output[2]) <= int(self.verbosity) and output[1] in self.output_groups:
             text = output[0].format(*args)
-            if self.txt_to_speech:
+            if self.ts_translator:
+                print(self.ts_translator)
+                import pyaudio
+                import wave
+                #if self.ts_translator='gc':
+                from google.cloud import texttospeech
                 input_text = texttospeech.types.SynthesisInput(text='{0}'.format(text))
                 response = self.client.synthesize_speech(input_text, self.voice, self.audio_config)
                 response.audio_content
@@ -208,24 +211,19 @@ class OutputControl:
         self.asound = cdll.LoadLibrary('libasound.so')
         handler_def = CFUNCTYPE(None, c_char_p, c_int, c_char_p, c_int, c_char_p)
         self.c_error_handler = handler_def(self.py_error_handler)
-        self.client = texttospeech.TextToSpeechClient()
-        self.audio_config = texttospeech.types.AudioConfig(audio_encoding=texttospeech.enums.AudioEncoding.LINEAR16)
-        for audio_values in audio_settings_dict['audio_values']:
-            if audio_values['active'] == 'True':
-                self.voice = texttospeech.types.VoiceSelectionParams(
-                        language_code=audio_values['language'], 
-                        ssml_gender=texttospeech.enums.SsmlVoiceGender.FEMALE)
-                self.chunk_size = int(audio_values['chunk_size'])
 
-    def __init__(self, output_groups, verbosity_level):
+        if self.ts_translator:
+            self.client = texttospeech.TextToSpeechClient()
+            self.audio_config = texttospeech.types.AudioConfig(audio_encoding=texttospeech.enums.AudioEncoding.LINEAR16)
+
+            for audio_values in audio_settings_dict['audio_values']:
+                if audio_values['active'] == 'True':
+                    self.voice = texttospeech.types.VoiceSelectionParams(
+                            language_code=audio_values['language'], 
+                            ssml_gender=texttospeech.enums.SsmlVoiceGender.FEMALE)
+                    self.chunk_size = int(audio_values['chunk_size'])
+
+    def __init__(self, output_groups, verbosity, ts_translator):
         self.output_groups = output_groups
-        self.verbosity_level = verbosity_level
-        try:
-            if int(verbosity_level) < 4:
-                self.txt_to_speech = False
-        
-            else:
-                self.txt_to_speech = True
-        except ValueError:
-            verbosity_level = 0
-            self.txt_to_speech = True
+        self.verbosity = verbosity
+        self.ts_translator = ts_translator

@@ -10,11 +10,7 @@ from brain.db_memory.database import Database
 from brain.fs_memory.file_handler import FileHandler
 from brain.processing.command_finder import CommandFinder
 from brain.processing.executor import Executor
-from ears.listener import Listener
 from ears.input_control import InputControl
-from antenna.google_transcriber import GoogleTranscriber
-from antenna.bing_transcriber import BingTranscriber
-from antenna.peak_connection import PeakConnection
 
 '''
 PyPI deploy
@@ -105,6 +101,7 @@ class PeakBot:
         '''
         self.output_control.print(self.output_control.INIT_ATT, ('listener',))
         try:
+            from ears.listener import Listener
             self.listener = Listener(self.output_control, self.audio_settings_dict, audio_wav_path)
             self.output_control.print(self.output_control.INIT, ('Listener',))
         except Exception as e:
@@ -123,11 +120,13 @@ class PeakBot:
             self.output_control.print(self.output_control.NOT_INIT, ('Command finder', str(e)))
             sys.exit()
 
-    def init_transcriber(self, expected_calls):
+    def init_translator(self, expected_calls):
         '''
         Initiates a new transcriber.
 
         '''
+        from antenna.google_transcriber import GoogleTranscriber
+        from antenna.bing_transcriber import BingTranscriber
         speech_apis_dict = {
                 'GOOGL': GoogleTranscriber,
                 'BING': BingTranscriber
@@ -137,6 +136,8 @@ class PeakBot:
             for speech_api in self.settings_dict['speech_apis']:
                 if speech_api['active']:
                     transcriber_type = speech_apis_dict[speech_api['code']]
+                    from antenna.google_transcriber import GoogleTranscriber
+                    from antenna.bing_transcriber import BingTranscriber
                     break
             
             self.transcriber = transcriber_type(self.output_control, self.audio_settings_dict, expected_calls)
@@ -164,15 +165,30 @@ class PeakBot:
         '''
         self.output_control.print(self.output_control.INIT_ATT, ('connection',))
         # Get the bot name from the database.
-        bot_data=('Happy Worm', '1.0.1a1')
-        connection_data=('no_code','no_ip')
+        bot_data={
+                'name':'unknown', 
+                'version':'1.0.1a1'
+                }
+        connection_data={
+                'code':'no_code',
+                'ip':'no_ip'
+                }
         try:
-            bd = self.settings_dict['bot_defaults']
-            bot_data = (bd['bot_name'], bd['bot_code'], bd['bot_professions'])
+            default_data = self.settings_dict['bot_defaults']
+            bot_data = { 
+                    'name'       : default_data['bot_name'], 
+                    'code'       : default_data['bot_code'], 
+                    'professions': default_data['bot_professions'],
+                    'version'    : default_data['bot_version']
+                    }
             for connection in self.settings_dict['connections']:
                 if connection['connection_active']:
-                    connection_data = (connection['code'], connection['server_ip'])
+                    connection_data = {
+                            'code':connection['code'], 
+                            'ip':connection['server_ip']
+                            }
                     break
+            from antenna.peak_connection import PeakConnection
             self.connection = PeakConnection(self.output_control, bot_data, connection_data)
             self.output_control.print(self.output_control.INIT, ('Connection',))
         except Exception as e:
@@ -207,27 +223,27 @@ class PeakBot:
 
             self.output_control.print(self.output_control.RESPONSE, (response_text, str(expected_answers)))
 
-            self.listener.record()
-            #if len(expected_answers) > 0:
-                #send to transcriber as expected words!!!
+            if self.st_transcriber:
+                self.listener.record()
+                #if len(expected_answers) > 0:
+                    #send to transcriber as expected words!!!
+                alternatives = self.transcriber.transcribe(self.listener.file_path)
+                response = self.input_control.format_input(alternatives[0].transcript)
+                for word in response:
+                    additional_args = additional_args + (word,)
+            else:
+                additional_args = additional_args + (input(),)
 
-            alternatives = self.transcriber.transcribe(self.listener.file_path)
-            response = self.input_control.format_input(alternatives[0].transcript)
-            for word in response:
-                additional_args = additional_args + (word,)
         return additional_args
 
-    def run_peak_bot(self, verbosity):
+    def run_bot(self, verbosity=0, st_transcriber=None):
         self.exit = False
         while not self.exit:
             transcript = ''
-            if verbosity < 4:
-                transcript = input(':')
 
-            else:
+            if st_transcriber:
                 self.listener.record()
                 alternatives = self.transcriber.transcribe(self.listener.file_path)
-
                 '''
                 Higher confidence:
                 confidence = 0.3
@@ -242,6 +258,12 @@ class PeakBot:
                     if alternative.confidence>0.7:
                         transcript = alternative.transcript
                         break
+                
+                if os.path.exists(self.listener.file_path):
+                    os.remove(self.listener.file_path)
+            else:
+                transcript = input(self.output_control.COM_INP[0])
+
 
             self.output_control.print(self.output_control.BFR_COM_WORDS, (transcript,))
             response = self.input_control.format_input(transcript)
@@ -251,31 +273,35 @@ class PeakBot:
             args = args + self.get_additional_args(len(args))
 
             self.executor.execute_command(self.command_finder.command_id, args)
-            if os.path.exists(self.listener.file_path):
-                os.remove(self.listener.file_path)
             self.database.connection.commit()
             self.exit = True
 
-    def __init__(self, fundamental_directories, verbosity):
-        self.output_control = OutputControl(range(0, 8), str(verbosity))
+    def __init__(self, directories, verbosity=0, pk_server=None, st_transcriber=None, ts_translator=None):
+        self.pk_server = pk_server
+        self.st_transcriber = st_transcriber
+        self.ts_translator = ts_translator
+
+        self.output_control = OutputControl(range(0, 8), str(verbosity), ts_translator)
         self.file_handler = FileHandler(self.output_control)
-        self.audio_settings_dict = self.file_handler.load_from_path(fundamental_directories[1])  
+        self.audio_settings_dict = self.file_handler.load_from_path(directories['audio_base_path'])  
         self.output_control.set_values(self.audio_settings_dict)
-        self.settings_dict = self.file_handler.load_from_path(fundamental_directories[0])
+        self.settings_dict = self.file_handler.load_from_path(directories['settings_path'])
         self.output_control.print(self.output_control.WELCOME_MSG) 
-        self.languages_dict = self.file_handler.load_from_path(fundamental_directories[2])
+        self.languages_dict = self.file_handler.load_from_path(directories['lang_base_path'])
         self.input_control = InputControl(self.output_control)
-        self.set_database_path(fundamental_directories[5])
-        self.set_modules_and_commands(fundamental_directories[3])
+        self.set_database_path(directories['database_path'])
+        self.set_modules_and_commands(directories['library_path'])
 
         self.init_database()
-        self.init_listener(fundamental_directories[4])
         self.init_command_finder()
-        self.init_transcriber(self.command_finder.expected_calls)
-        self.init_executor(fundamental_directories[6])
-        self.init_connection()
-        #self.update()
-        self.run_peak_bot(int(verbosity))
+        self.init_executor(directories['modules_path'])
 
-        self.database.connection.close()
-        self.output_control.print(self.output_control.DB_CON_CLOSED)
+        if pk_server:
+            self.init_connection()
+        if st_transcriber:
+            self.init_listener(directories['audio_wav_path'])
+        if ts_translator:
+            self.init_translator(self.command_finder.expected_calls)
+
+        #self.update()
+

@@ -34,25 +34,32 @@ def main():
     '''
     Clone
     '''
-    settings_path = "peak_data/configuration/settings.json"
-    audio_base_path = "peak_data/configuration/audio_base.json"
-    lang_base_path = "peak_data/configuration/lang_base.json"
-    library_path = "peak_data/library/"
-    audio_wav_path = "brain/fs_memory/.temp_recording.wav"
-    database_path = "peak_bot.db"
+    default_directories={
+    'settings_path':'peak_data/configuration/settings.json',
+    'audio_base_path':'peak_data/configuration/audio_base.json',
+    'lang_base_path':'peak_data/configuration/lang_base.json',
+    'library_path':'peak_data/library/',
+    'audio_wav_path':'brain/fs_memory/.temp_recording.wav',
+    'database_path':'peak_bot.db',
+    'modules_path':'modules',
+    }
 
     '''
     PyPI deploy
-    settings_path = resource_filename(__name__, "peak_data/configuration/settings.json")
-    audio_base_path = resource_filename(__name__, "peak_data/configuration/audio_base.json")
-    lang_base_path = resource_filename(__name__, "peak_data/configuration/lang_base.json")
-    library_path = os.path.dirname(resource_filename(__name__, "peak_data/library/core.json"))+ '/'
-    audio_wav_path = os.path.join(os.path.expanduser("~"), ".temp_recording.wav")
-    database_path = os.path.join(os.path.expanduser("~"), ".peak_bot.db")
+    default_directories={
+    'settings_path':resource_filename(__name__, 'peak_data/configuration/settings.json'),
+    'audio_base_path':resource_filename(__name__, 'peak_data/configuration/audio_base.json'),
+    'lang_base_path':resource_filename(__name__, 'peak_data/configuration/lang_base.json'),
+    'library_path':os.path.dirname(resource_filename(__name__, 'peak_data/library/core.json'))+'/',
+    'audio_wav_path':os.path.join(os.path.expanduser('~'), '.temp_recording.wav'),
+    'database_path':os.path.join(os.path.expanduser('~'), '.peak_bot.db'),
+    'modules_path':'modules',
+    }
     '''
-    modules_path = "modules"
-    fundamental_directories = (settings_path, audio_base_path, lang_base_path, library_path, audio_wav_path, database_path, modules_path)
-    bot = PeakBot(fundamental_directories, verbosity)
+    bot = PeakBot(default_directories, verbosity)
+    bot.run_bot()
+    bot.database.connection.close()
+    bot.output_control.print(bot.output_control.DB_CON_CLOSED)
         
 if __name__ == '__main__':
     main()

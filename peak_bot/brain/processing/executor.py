@@ -50,6 +50,7 @@ class Executor:
             if True:
                 if programming_language == 'python3':
                     self.import_external_modules(command_id)
+                    self.answer = None
 
                     if len(command[3])>0:
                         exec('from {0}.{1} import {2}'.format(self.modules_path, command[3], command[4]))
@@ -61,11 +62,12 @@ class Executor:
                     else:
                         exec(definition.format(*command_args))
 
-                    if self.answer[1]:
-                        success_response = self.database.cursor.execute(
+                    if self.answer:
+                        if len(self.answer)>1:
+                            success_response = self.database.cursor.execute(
                                 self.database.query_list.select_responses_by_command_id.text, 
                                 (str(command_id), self.answer[1], self.answer[1])).fetchone()
-                        oc.print(oc.SUC_RESP, (success_response,))
+                            oc.print(oc.SUC_RESP, (success_response,))
 
                 elif programming_language == 'sql':
                     pass
