@@ -16,6 +16,7 @@ class QueryList:
         description VARCHAR(1024), \
         creation_time TEXT, \
         read_time TEXT, \
+        completion INTEGER, \
         active BOOLEAN \
         );')
 

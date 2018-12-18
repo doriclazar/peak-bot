@@ -1,8 +1,13 @@
 {
   "command": {
     "module_code": "FILESYS",
-    "definition": "self.returned_args = (datetime.datetime.now(),); self.additional_data = '%s %s'",
-    "external_modules": [],
+    "definition": "self.returned_args = (datetime.now(),); self.additional_data = '%s %s'",
+    "external_modules": [
+     {
+    "name":"datetime",
+    "active":"True"
+     }
+    ],
     "programming_language": "python3",
     "categories": [
       {

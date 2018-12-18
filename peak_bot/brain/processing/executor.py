@@ -1,6 +1,5 @@
 import sqlite3
 import subprocess
-#import requests
 class Executor:
     returned_args=()
 
@@ -11,7 +10,8 @@ class Executor:
 
     def install_external_module(self, external_module):
         try:
-            if requests.get('http://pypi.python.org/pypi/{0}/json'.format(external_module)).status_code == 200:
+            import requests
+            if requests.get('http://pypi.python.org/pypi/{}/json'.format(external_module)).status_code == 200:
                 #Prompt for installation
                 pass
             else:
@@ -27,7 +27,7 @@ class Executor:
         for external_module in external_modules:
             oc.print(oc.MOD_ATT_IMPORT, external_module)
             try:
-                exec('from {0} import *'.format(external_module[0]), globals())
+                exec('from {} import *'.format(external_module[0]), globals())
                 oc.print(oc.MOD_IMPORT, external_module)
             except ImportError as e:
                 oc.print(oc.MOD_NOT_IMPORT, (external_module, str(e)))
@@ -52,15 +52,18 @@ class Executor:
                     self.import_external_modules(command_id)
                     self.answer = None
 
+
+                    #if it has a script path
                     if len(command[3])>0:
-                        exec('from {0}.{1} import {2}'.format(self.modules_path, command[3], command[4]))
-                        exec('self.instance = {0}()'.format(command[4]))
+                        exec('from {}.{} import {}'.format(self.modules_path, command[3], command[4]))
+                        exec('self.instance = {}()'.format(command[4]))
                         exec('self.answer = self.instance.{}({})'.format(definition, command_args))
                         answer_text = self.answer[0]
                         self.output_control.print(self.output_control.ANSWER, (answer_text,))
 
                     else:
                         exec(definition.format(*command_args))
+                        print(self.returned_args)
 
                     if self.answer:
                         if len(self.answer)>1:

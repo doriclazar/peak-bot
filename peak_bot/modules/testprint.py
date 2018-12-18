@@ -1,4 +1,5 @@
 class Printer:
+    def 
     def try_printing(self, *args):
         if args[0]:
             answer = (' '.join(args[0]), 100)
@@ -8,4 +9,4 @@ class Printer:
         return(answer)
 
     def __init__(self):
-        self.try_printing
+        pass
