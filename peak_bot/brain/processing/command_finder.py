@@ -1,7 +1,5 @@
 import os
 
-#from pocketsphinx.pocketsphinx import Decoder
-
 class CommandFinder:
     command_id = 0
     command_args = ()
