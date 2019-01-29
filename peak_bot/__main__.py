@@ -29,7 +29,8 @@ def main():
     'database_path':os.path.join(os.path.expanduser('~'), '.peak_bot.db'),
     'modules_path':'modules',
     }
-    bot = PeakBot(default_directories, verbosity)
+    bot = PeakBot()
+    bot.self_build(default_directories, verbosity)
     bot.run_bot()
     bot.database.connection.close()
     bot.output_control.print(bot.output_control.DB_CON_CLOSED)

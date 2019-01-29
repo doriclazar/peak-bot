@@ -276,7 +276,7 @@ class PeakBot:
             self.database.connection.commit()
             self.exit = True
 
-    def __init__(self, directories, verbosity=0, pk_server=None, st_transcriber=None, ts_translator=None):
+    def self_build(self, directories, verbosity=0, pk_server=None, st_transcriber=None, ts_translator=None):
         self.pk_server = pk_server
         self.st_transcriber = st_transcriber
         self.ts_translator = ts_translator
@@ -304,4 +304,6 @@ class PeakBot:
             self.init_translator(self.command_finder.expected_calls)
 
         #self.update()
-
+    def __init__(self):
+        # Moved to "self_build()" for ci / testing.
+        pass
