@@ -82,9 +82,6 @@ class PeakBot:
             oc.print(oc.MOD_COM_NOT_SET, (str(e),))
                 
     def init_database(self):
-        '''
-        Initiates a new database.
-        '''
         self.output_control.print(self.output_control.INIT_ATT, ('database',))
         #try:
         if True:
@@ -96,9 +93,6 @@ class PeakBot:
             self.output_control.print(self.output_control.NOT_INIT, ('Database', str(e)))
 
     def init_listener(self, audio_wav_path):
-        '''
-        Initiates a new listener.
-        '''
         self.output_control.print(self.output_control.INIT_ATT, ('listener',))
         try:
             from ears.listener import Listener
@@ -109,9 +103,6 @@ class PeakBot:
             sys.exit()
 
     def init_command_finder(self):
-        '''
-        Initiates a new command_finder.
-        '''
         self.output_control.print(self.output_control.INIT_ATT, ('command finder',))
         try:
             self.command_finder = CommandFinder(self.output_control, self.input_control, self.database)
@@ -121,10 +112,6 @@ class PeakBot:
             sys.exit()
 
     def init_translator(self, expected_calls):
-        '''
-        Initiates a new transcriber.
-
-        '''
         from antenna.google_transcriber import GoogleTranscriber
         from antenna.bing_transcriber import BingTranscriber
         speech_apis_dict = {
@@ -148,9 +135,6 @@ class PeakBot:
 
 
     def init_executor(self, modules_path):
-        '''
-        Initiates a new executor.
-        '''
         self.output_control.print(self.output_control.INIT_ATT, ('executor',))
         try:
             self.executor = Executor(self.output_control, self.database, modules_path)
@@ -160,9 +144,6 @@ class PeakBot:
             sys.exit()
 
     def init_connection(self):
-        '''
-        Initiates a new executor.
-        '''
         self.output_control.print(self.output_control.INIT_ATT, ('connection',))
         # Get the bot name from the database.
         bot_data={
@@ -236,7 +217,7 @@ class PeakBot:
 
         return additional_args
 
-    def run_bot(self, verbosity=0, st_transcriber=None):
+    def run_bot(self, verbose=False, st_transcriber=None):
         self.exit = False
         while not self.exit:
             transcript = ''
@@ -276,12 +257,12 @@ class PeakBot:
             self.database.connection.commit()
             self.exit = True
 
-    def self_build(self, directories, verbosity=0, pk_server=None, st_transcriber=None, ts_translator=None):
+    def self_build(self, directories, verbose, pk_server=None, st_transcriber=None, ts_translator=None):
         self.pk_server = pk_server
         self.st_transcriber = st_transcriber
         self.ts_translator = ts_translator
 
-        self.output_control = OutputControl(range(0, 8), str(verbosity), ts_translator)
+        self.output_control = OutputControl(range(8), str(verbose), ts_translator)
         self.file_handler = FileHandler(self.output_control)
         self.audio_settings_dict = self.file_handler.load_from_path(directories['audio_base_path'])  
         self.output_control.set_values(self.audio_settings_dict)
@@ -304,6 +285,7 @@ class PeakBot:
             self.init_translator(self.command_finder.expected_calls)
 
         #self.update()
+
     def __init__(self):
         # Moved to "self_build()" for ci / testing.
         pass

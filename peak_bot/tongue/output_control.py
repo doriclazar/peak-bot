@@ -16,7 +16,6 @@ class OutputControl:
     transcriber = 5
     executioner = 6 
     '''
-    verbosity_level = 0
     output_groups = ()
     signs = ('     ', ' >>  ', ' ??  ', ' !!  ', ' **  ', ' xx  ', '  ')
     '''
@@ -163,7 +162,7 @@ class OutputControl:
 	Prepares "text" variable to be printed.
 	Checks if it shoud print or speak the response.
         '''
-        if int(output[2]) <= int(self.verbosity) and output[1] in self.output_groups:
+        if self.verbose and output[1] in self.output_groups:
             text = output[0].format(*args)
             if self.ts_translator:
                 print(self.ts_translator)
@@ -223,7 +222,7 @@ class OutputControl:
                             ssml_gender=texttospeech.enums.SsmlVoiceGender.FEMALE)
                     self.chunk_size = int(audio_values['chunk_size'])
 
-    def __init__(self, output_groups, verbosity, ts_translator):
+    def __init__(self, output_groups, verbose, ts_translator):
         self.output_groups = output_groups
-        self.verbosity = verbosity
+        self.verbose = verbose
         self.ts_translator = ts_translator

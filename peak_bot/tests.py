@@ -52,13 +52,25 @@ default_directories={
 'modules_path':'modules',
 }
 
-test_bot = PeakBot()
 
+def test_build():
+    test_bot = PeakBot()
+    test_bot.self_build(default_directories, 0)
 
+'''
 def test_oc():
     test_bot.output_control = OutputControl(range(0, 8), str(verbosity), '%')
 def test_fh():
     test_bot.file_handler = FileHandler(test_bot.output_control)
 def test_ic():
     test_bot.input_control = InputControl(test_bot.output_control)
+def test_db():
+    test_bot.set_database_path(default_directories['database_path'])
+    test_bot.init_database()
+def test_mc():
+    test_bot.set_modules_and_commands(default_directories['library_path'])
 
+def test_ex():
+    test_bot.init_executor(default_directories['modules_path'])
+
+'''
