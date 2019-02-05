@@ -102,3 +102,20 @@ def main():
         
 if __name__ == '__main__':
     main()
+
+# TESTING:
+from io import StringIO
+from contextlib import contextmanager
+
+@contextmanager
+def replace_stdin(target):
+    orig = sys.stdin
+    sys.stdin = target
+    yield
+    sys.stdin = orig
+
+def test_bot_run():
+    test_bot = PeakBot(default_directories, False)
+    with replace_stdin(StringIO("exit")):
+        test_bot.run_bot()
+    test_bot.database.connection.close()

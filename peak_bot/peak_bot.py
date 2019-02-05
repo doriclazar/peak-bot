@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-import os
-import sys
+import os, sys
 
 try:
     from .tongue.output_control import OutputControl
@@ -257,7 +256,7 @@ class PeakBot:
             self.database.connection.commit()
             self.exit = True
 
-    def self_build(self, directories, verbose, pk_server=None, st_transcriber=None, ts_translator=None):
+    def __init__(self, directories, verbose, pk_server=None, st_transcriber=None, ts_translator=None):
         self.pk_server = pk_server
         self.st_transcriber = st_transcriber
         self.ts_translator = ts_translator
@@ -277,15 +276,11 @@ class PeakBot:
         self.init_command_finder()
         self.init_executor(directories['modules_path'])
 
-        if pk_server:
-            self.init_connection()
         if st_transcriber:
             self.init_listener(directories['audio_wav_path'])
         if ts_translator:
             self.init_translator(self.command_finder.expected_calls)
-
-        #self.update()
-
-    def __init__(self):
-        # Moved to "self_build()" for ci / testing.
-        pass
+        if pk_server:
+            self.init_connection()
+            self.update()
+        
