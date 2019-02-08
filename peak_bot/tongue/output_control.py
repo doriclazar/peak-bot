@@ -162,7 +162,7 @@ class OutputControl:
 	Prepares "text" variable to be printed.
 	Checks if it shoud print or speak the response.
         '''
-        if self.verbose==True and output[1] in self.output_groups:
+        if (self.verbose) and (output[1] in self.output_groups):
             text = output[0].format(*args)
             if self.ts_translator:
                 print(self.ts_translator)

@@ -261,7 +261,7 @@ class PeakBot:
         self.st_transcriber = st_transcriber
         self.ts_translator = ts_translator
 
-        self.output_control = OutputControl(range(8), str(verbose), ts_translator)
+        self.output_control = OutputControl(range(8), verbose, ts_translator)
         self.file_handler = FileHandler(self.output_control)
         self.audio_settings_dict = self.file_handler.load_from_path(directories['audio_base_path'])  
         self.output_control.set_values(self.audio_settings_dict)

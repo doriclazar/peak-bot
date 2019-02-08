@@ -91,11 +91,11 @@ def main():
             #fix output *1
             print('BAD INPUT')
 
+    # Remove, and returtn to using __init__(..., trans=None) for PeakBot
     ts_translator=None
     st_transcriber=None
 
-    bot = PeakBot()
-    bot.self_build(default_directories, verbose, pk_server, st_transcriber, ts_translator)
+    bot = PeakBot(default_directories, verbose, pk_server, st_transcriber, ts_translator)
     bot.run_bot()
     bot.database.connection.close()
     bot.output_control.print(bot.output_control.DB_CON_CLOSED)
@@ -107,15 +107,28 @@ if __name__ == '__main__':
 from io import StringIO
 from contextlib import contextmanager
 
-@contextmanager
-def replace_stdin(target):
-    orig = sys.stdin
-    sys.stdin = target
-    yield
-    sys.stdin = orig
+class TestBot(object):
+    @contextmanager
+    def force_input(self, input_text):
+        initial = sys.stdin
+        sys.stdin = input_text 
+        yield
+        sys.stdin = initial
 
-def test_bot_run():
     test_bot = PeakBot(default_directories, False)
-    with replace_stdin(StringIO("exit")):
-        test_bot.run_bot()
-    test_bot.database.connection.close()
+
+    def test_models_integrity(self):
+        tables = [('languages',),('sqlite_sequence',),('modules',),('external_modules',),
+                ('commands',),('imports',),('calls',),('words',),('combos',)]
+        assert tables == list(self.test_bot.database.cursor.execute('select name from sqlite_master where type = "table"'))
+
+    def test_oc(self):
+        assert self.test_bot.output_control is not None
+
+
+    # Expand to work with multi-layered commands (eg. copy ... which file? ... test.txt).
+    def test_bot_run(self):
+        with self.force_input(StringIO("exit now")):
+            self.test_bot.run_bot()
+        self.test_bot.database.connection.close()
+
