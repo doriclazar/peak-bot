@@ -1,14 +1,14 @@
 {
   "command": {
-        "name": "test print",
-	"code": "TESTPRINT0",
+        "name": "print",
+	"code": "PRINT0",
         "programming_language":"python3",
         "definition": "try_printing",
-	"script_path": "testprint",
+	"script_path": "print",
 	"class_name":"Printer",
 	"description":"",
         "active": "True",
-        "note": "Testing command",
+        "note": "Command for printing the input.",
 	"module_code":"CORE",
 	"external_modules":[],
         "calls": [
@@ -18,22 +18,16 @@
             "active": "True",
             "words": [
               {
-                "text": "test",
+                "text": "print",
                 "variable_length": "0",
                 "optional": "False",
                 "position": 1
-              },
-              {
-                "text": "printing",
-                "variable_length": "0",
-                "optional": "False",
-                "position": 2
-              },
-              {
+              },              
+	      {
                 "text": "var",
                 "variable_length": "1",
                 "optional": "False",
-                "position": 3 
+                "position": 2 
               }
             ]
           },
@@ -43,16 +37,10 @@
             "active": "True",
             "words": [
               {
-                "text": "test",
+                "text": "print",
                 "variable_length": "0",
                 "optional": "False",
                 "position": 1
-              },
-              {
-                "text": "printing",
-                "variable_length": "0",
-                "optional": "False",
-                "position": 2
               }
             ]
           },

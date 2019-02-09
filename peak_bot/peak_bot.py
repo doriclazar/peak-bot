@@ -217,8 +217,8 @@ class PeakBot:
         return additional_args
 
     def run_bot(self, verbose=False, st_transcriber=None):
-        self.exit = False
-        while not self.exit:
+        self.running = True
+        while self.running:
             transcript = ''
 
             if st_transcriber:
@@ -254,7 +254,7 @@ class PeakBot:
 
             self.executor.execute_command(self.command_finder.command_id, args)
             self.database.connection.commit()
-            self.exit = True
+            self.running = False
 
     def __init__(self, directories, verbose, pk_server=None, st_transcriber=None, ts_translator=None):
         self.pk_server = pk_server

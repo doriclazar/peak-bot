@@ -2,6 +2,7 @@ import sqlite3
 import subprocess
 class Executor:
     returned_args=()
+    executed = False
 
     def __init__(self, output_control, database, modules_path):
         self.output_control = output_control
@@ -37,6 +38,7 @@ class Executor:
 
 
     def execute_command(self, command_id, command_args):
+        self.executed=False
         oc = self.output_control
         definition = 'No command'
         external_modules = ()
@@ -59,7 +61,7 @@ class Executor:
                         exec('self.instance = {}()'.format(command[4]))
                         exec('self.answer = self.instance.{}({})'.format(definition, command_args))
                         answer_text = self.answer[0]
-                        self.output_control.print(self.output_control.ANSWER, (answer_text,))
+                        self.output_control.print(oc.ANSWER, (answer_text,))
 
                     else:
                         exec(definition.format(*command_args))
@@ -81,6 +83,7 @@ class Executor:
                 elif programming_language == 'cpp':
                     pass
 
+                self.executed = True
                 oc.print(oc.COM_EXEC)
 
             #except Exception as e:

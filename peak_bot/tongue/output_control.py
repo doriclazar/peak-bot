@@ -1,5 +1,7 @@
 import os
-
+import pyaudio
+import wave
+from google.cloud import texttospeech
 from struct import pack
 from ctypes import CFUNCTYPE, cdll, c_char_p, c_int
 
@@ -162,14 +164,12 @@ class OutputControl:
 	Prepares "text" variable to be printed.
 	Checks if it shoud print or speak the response.
         '''
-        if (self.verbose) and (output[1] in self.output_groups):
+        if (output[1] in self.output_groups):
             text = output[0].format(*args)
-            if self.ts_translator:
-                print(self.ts_translator)
-                import pyaudio
-                import wave
-                #if self.ts_translator='gc':
-                from google.cloud import texttospeech
+            if self.verbose: 
+                print('{0}{1}'.format(self.signs[output[3]], text))
+
+            elif self.ts_translator and output[2]==0:
                 input_text = texttospeech.types.SynthesisInput(text='{0}'.format(text))
                 response = self.client.synthesize_speech(input_text, self.voice, self.audio_config)
                 response.audio_content
@@ -194,17 +194,8 @@ class OutputControl:
                 py_stream.close()
                 py_audio.terminate()
 
-
                 if os.path.exists(audio_path):
                     os.remove(audio_path)
-                
-            #print('{0}{1}'.format(self.signs[output[3]], text))
-            else:
-                # To remove tab-signs from command output: 
-                # Uncomment:
-                #print('{0}'.format(text))
-                # Comment out:
-                print('{0}{1}'.format(self.signs[output[3]], text))
 
     def set_values(self, audio_settings_dict):
         self.asound = cdll.LoadLibrary('libasound.so')

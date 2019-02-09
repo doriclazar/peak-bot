@@ -92,7 +92,7 @@ def main():
             print('BAD INPUT')
 
     # Remove, and returtn to using __init__(..., trans=None) for PeakBot
-    ts_translator=None
+    ts_translator='google'
     st_transcriber=None
 
     bot = PeakBot(default_directories, verbose, pk_server, st_transcriber, ts_translator)
@@ -127,8 +127,19 @@ class TestBot(object):
 
 
     # Expand to work with multi-layered commands (eg. copy ... which file? ... test.txt).
-    def test_bot_run(self):
+    def test_com_exit(self):
         with self.force_input(StringIO("exit now")):
             self.test_bot.run_bot()
+            assert self.test_bot.executor.executed
+
+    def test_com_time(self):
+        with self.force_input(StringIO("whats the time")):
+            self.test_bot.run_bot()
+            assert self.test_bot.executor.executed
+
+    def test_com_print(self):
+        with self.force_input(StringIO("print testing")):
+            self.test_bot.run_bot()
+            assert self.test_bot.executor.executed
         self.test_bot.database.connection.close()
 
