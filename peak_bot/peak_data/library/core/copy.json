@@ -10,7 +10,7 @@
 	"description":"",
         "active": "True",
         "note": "Copy the specified file from argument1-{0}(source) to argument2-{1}(destination). ",
-        "module_code": "FILESYS",
+        "module_code": "CORE",
 	"external_modules":[
 	  {
 	    "name":"shutil",

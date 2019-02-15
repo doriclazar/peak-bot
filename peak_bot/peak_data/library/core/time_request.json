@@ -1,6 +1,6 @@
 {
   "command": {
-    "module_code": "FILESYS",
+    "module_code": "CORE",
     "definition": "self.returned_args = datetime.now().strftime('%Y-%m-%d %H:%M:%S'); self.additional_data = '%s %s'",
     "external_modules": [
      {

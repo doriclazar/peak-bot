@@ -125,8 +125,6 @@ class TestBot(object):
     def test_oc(self):
         assert self.test_bot.output_control is not None
 
-
-    # Expand to work with multi-layered commands (eg. copy ... which file? ... test.txt).
     def test_com_exit(self):
         with self.force_input(StringIO("exit now")):
             self.test_bot.run_bot()
@@ -141,5 +139,12 @@ class TestBot(object):
         with self.force_input(StringIO("print testing")):
             self.test_bot.run_bot()
             assert self.test_bot.executor.executed
-        self.test_bot.database.connection.close()
+            #print(self.test_bot.executor.answer)
+        #    assert self.test_bot.executor.answer == "testing"
 
+    def test_com_ping(self):
+        #with self.force_input(StringIO("ping  -c 2 localhost")):
+        with self.force_input(StringIO("blarggg")):
+            self.test_bot.run_bot()
+            assert self.test_bot.executor.executed
+        self.test_bot.database.connection.close()

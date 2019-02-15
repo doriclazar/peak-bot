@@ -1,6 +1,7 @@
 import sqlite3
 import subprocess
 class Executor:
+    answer_text=" "
     returned_args=()
     executed = False
 
@@ -65,7 +66,8 @@ class Executor:
 
                     else:
                         exec(definition.format(*command_args))
-                        print(self.returned_args)
+                        answer_text = self.returned_args
+                        self.output_control.print(oc.ANSWER, (answer_text,))
 
                     if self.answer:
                         if len(self.answer)>1:
@@ -78,7 +80,8 @@ class Executor:
                     pass
 
                 elif programming_language == 'bash':
-                    subprocess.Popen(definition.format(*command_args), shell = True)
+                    self.answer = subprocess.check_output(definition.format(*command_args).split(" "), shell= True)
+                    #self.answer = subprocess.popen(definition.format(*command_args), shell = True)
 
                 elif programming_language == 'cpp':
                     pass
